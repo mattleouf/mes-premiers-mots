@@ -22,8 +22,9 @@ function createSlots(word) {
   const slots = [];
   for (const letter of word) {
     const d = document.createElement('div');
-    d.className = 'slot';
+    d.className = 'slot preview';
     d.dataset.letter = letter;
+    d.textContent = letter;
     container.appendChild(d);
     slots.push(d);
   }
@@ -34,6 +35,10 @@ function createTiles(word) {
   const container = document.getElementById('tiles');
   container.innerHTML = '';
   const letters = word.split('');
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  while (letters.length < word.length + 3) {
+    letters.push(alphabet[Math.floor(Math.random() * alphabet.length)]);
+  }
   // simple shuffle
   for (let i = letters.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));

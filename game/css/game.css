@@ -22,6 +22,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #000;
+}
+.slot.preview {
+  opacity: 0.3;
 }
 .slot.filled {
   border-style: solid;
@@ -31,6 +35,7 @@ body {
   justify-content: center;
   gap: 0.5rem;
   flex-wrap: wrap;
+  position: relative;
 }
 .tile {
   width: 40px;
