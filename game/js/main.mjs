@@ -90,10 +90,11 @@ function startConfetti() {
   confettiInterval = setInterval(() => {
     const span = document.createElement('span');
     span.className = 'confetti';
-    span.textContent = '🎉';
+    span.textContent = Math.random() < 0.5 ? '🔶' : '🔷';
     span.style.setProperty('--x', Math.random() * 100 + '%');
     span.style.setProperty('--sway', (Math.random() * 60 - 30) + 'px');
     span.style.setProperty('--duration', 4 + Math.random() * 2 + 's');
+    span.style.setProperty('--rotate', (Math.random() < 0.5 ? '-' : '') + '720deg');
     container.appendChild(span);
     span.addEventListener('animationend', () => span.remove());
   }, 300);
@@ -113,11 +114,11 @@ function startPictureAnimation() {
   pic.classList.add('animate');
   bounceHandler = () => {
     bounceCount++;
-    if (bounceCount % 5 === 0) {
+    if (bounceCount % 10 === 0) {
       pic.animate([
-        { transform: 'scale(1.2) rotate(0deg)' },
-        { transform: 'scale(1.2) rotate(360deg)' }
-      ], { duration: 600 });
+        { transform: 'scale(1.3) rotate(0deg)' },
+        { transform: 'scale(1.3) rotate(360deg)' }
+      ], { duration: 400 });
     }
   };
   pic.addEventListener('animationiteration', bounceHandler);
