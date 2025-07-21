@@ -57,7 +57,7 @@ body {
   opacity: 0.9;
 }
 
-#flying-tile {
+.flying-tile {
   position: fixed;
   top: 0;
   left: 0;
