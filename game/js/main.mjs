@@ -133,9 +133,25 @@ function stopPictureAnimation() {
   }
 }
 
+function createBravoMessage() {
+  const gradient = ['#FFA500', '#FF8A00', '#FF6F00', '#FF5400', '#FF3800', '#FF0000'];
+  const text = 'BRAVO !';
+  let colorIdx = 0;
+  return text
+    .split('')
+    .map(ch => {
+      if (ch === ' ') {
+        return ' ';
+      }
+      const color = gradient[colorIdx++];
+      return `<span style="color:${color}">${ch}</span>`;
+    })
+    .join('');
+}
+
 function celebrate() {
   const msg = document.getElementById('message');
-  msg.textContent = 'Bravo !';
+  msg.innerHTML = createBravoMessage();
   msg.classList.add('show');
   startConfetti();
   startPictureAnimation();

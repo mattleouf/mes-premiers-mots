@@ -91,9 +91,8 @@ body {
 }
 
 #message {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #ff4081;
+  font-size: 3.5rem;
+  font-weight: 900;
   margin-top: 1rem;
   display: none;
   pointer-events: none;
@@ -101,9 +100,6 @@ body {
   left: 50%;
   top: 45%;
   transform: translate(-50%, -50%);
-  background: linear-gradient(45deg, #ff8a00, #e52e71);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px #ff4081;
   z-index: 2;
 }
