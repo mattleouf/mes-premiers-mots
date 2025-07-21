@@ -141,6 +141,37 @@ function celebrate() {
   startPictureAnimation();
 }
 
+async function animateWordReveal(slots) {
+  const duration = 300;
+  const delay = 200;
+  const wordEl = document.getElementById('word');
+
+  const animations = slots.map((slot, idx) =>
+    slot
+      .animate(
+        [
+          { transform: 'scale(1)' },
+          { transform: 'scale(1.3)' },
+          { transform: 'scale(1)' },
+        ],
+        { duration, easing: 'ease', delay: idx * delay }
+      )
+      .finished
+  );
+  await Promise.all(animations);
+
+  await wordEl
+    .animate(
+      [
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.3)' },
+        { transform: 'scale(1)' },
+      ],
+      { duration, easing: 'ease' }
+    )
+    .finished;
+}
+
 function showWord(wordObj) {
   document.getElementById('picture').textContent = wordObj.emoji;
   const slots = createSlots(wordObj.word);
@@ -153,8 +184,10 @@ function showWord(wordObj) {
   setupDragDrop(slots, tiles, () => {
     if (allSlotsFilled(slots)) {
       playSuccess();
-      celebrate();
-      nextBtn.style.display = 'inline-block';
+      animateWordReveal(slots).then(() => {
+        celebrate();
+        nextBtn.style.display = 'inline-block';
+      });
     }
   });
   nextBtn.onclick = () => startGame();
