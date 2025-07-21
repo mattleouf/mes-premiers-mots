@@ -74,3 +74,13 @@ body {
   z-index: 0;
   pointer-events: none;
 }
+
+/* discreet version label */
+.version {
+  position: fixed;
+  bottom: 4px;
+  right: 6px;
+  font-size: 0.6rem;
+  color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
