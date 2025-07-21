@@ -5,11 +5,15 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .container {
   text-align: center;
   padding: 2rem;
+  position: relative;
+  z-index: 1;
 }
 
 .title {
@@ -51,4 +55,22 @@ body {
 
 .btn:hover {
   opacity: 0.9;
+}
+
+#flying-tile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  background: #fdfdfd;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #000;
+  z-index: 0;
+  pointer-events: none;
 }
