@@ -2,6 +2,10 @@ import { setupDragDrop } from './drag-drop.mjs';
 import { allSlotsFilled } from './word-check.mjs';
 import { playSuccess } from './audio.mjs';
 
+let confettiInterval;
+let bounceCount = 0;
+let bounceHandler;
+
 async function loadWords() {
   // When the game is loaded from /game/index.html, the words JSON
   // lives in the sibling "data" directory. The previous relative
@@ -81,23 +85,59 @@ function createTiles(word) {
   return tiles;
 }
 
-function celebrate() {
-  const msg = document.getElementById('message');
-  const confetti = document.getElementById('confetti');
-  msg.textContent = 'Bravo !';
-  msg.style.display = 'block';
-  confetti.innerHTML = '';
-  for (let i = 0; i < 20; i++) {
+function startConfetti() {
+  const container = document.getElementById('confetti');
+  confettiInterval = setInterval(() => {
     const span = document.createElement('span');
     span.className = 'confetti';
     span.textContent = '🎉';
-    span.style.left = Math.random() * 100 + '%';
-    confetti.appendChild(span);
+    span.style.setProperty('--x', Math.random() * 100 + '%');
+    span.style.setProperty('--sway', (Math.random() * 60 - 30) + 'px');
+    span.style.setProperty('--duration', 4 + Math.random() * 2 + 's');
+    container.appendChild(span);
+    span.addEventListener('animationend', () => span.remove());
+  }, 300);
+}
+
+function stopConfetti() {
+  if (confettiInterval) {
+    clearInterval(confettiInterval);
+    confettiInterval = null;
   }
-  setTimeout(() => {
-    msg.style.display = 'none';
-    confetti.innerHTML = '';
-  }, 1500);
+  document.getElementById('confetti').innerHTML = '';
+}
+
+function startPictureAnimation() {
+  const pic = document.getElementById('picture');
+  bounceCount = 0;
+  pic.classList.add('animate');
+  bounceHandler = () => {
+    bounceCount++;
+    if (bounceCount % 5 === 0) {
+      pic.animate([
+        { transform: 'scale(1.2) rotate(0deg)' },
+        { transform: 'scale(1.2) rotate(360deg)' }
+      ], { duration: 600 });
+    }
+  };
+  pic.addEventListener('animationiteration', bounceHandler);
+}
+
+function stopPictureAnimation() {
+  const pic = document.getElementById('picture');
+  pic.classList.remove('animate');
+  if (bounceHandler) {
+    pic.removeEventListener('animationiteration', bounceHandler);
+    bounceHandler = null;
+  }
+}
+
+function celebrate() {
+  const msg = document.getElementById('message');
+  msg.textContent = 'Bravo !';
+  msg.classList.add('show');
+  startConfetti();
+  startPictureAnimation();
 }
 
 function showWord(wordObj) {
@@ -106,8 +146,9 @@ function showWord(wordObj) {
   const tiles = createTiles(wordObj.word);
   const nextBtn = document.getElementById('next');
   nextBtn.style.display = 'none';
-  document.getElementById('message').style.display = 'none';
-  document.getElementById('confetti').innerHTML = '';
+  document.getElementById('message').classList.remove('show');
+  stopConfetti();
+  stopPictureAnimation();
   setupDragDrop(slots, tiles, () => {
     if (allSlotsFilled(slots)) {
       playSuccess();

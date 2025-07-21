@@ -2,6 +2,7 @@
 body {
   text-align: center;
   padding-top: 2rem;
+  overflow: hidden; /* prevent page scrolling during gameplay */
 }
 #picture {
   font-size: 5rem;
@@ -83,24 +84,62 @@ body {
 }
 
 #message {
-  font-size: 2.5rem;
-  color: #4caf50;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ff4081;
   margin-top: 1rem;
   display: none;
+  pointer-events: none;
 }
 
+#message.show {
+  display: block;
+  animation: popIn 0.3s ease-out;
+}
+
+
 .confetti-container {
-  position: relative;
-  height: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 .confetti {
   position: absolute;
-  animation: fall 1s ease-out forwards;
+  top: -10px;
   font-size: 1.5rem;
+  animation: fall var(--duration, 4s) linear forwards;
+  left: var(--x, 0);
+  transform: translateX(0);
 }
 
 @keyframes fall {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(100px); opacity: 0; }
+  0% {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(var(--sway, 0)) translateY(100vh);
+    opacity: 0;
+  }
 }
+
+#picture.animate {
+  animation: bounce 1s ease-in-out infinite alternate;
+}
+
+@keyframes bounce {
+  from { transform: scale(1); }
+  to { transform: scale(1.2); }
+}
+
+@keyframes popIn {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
