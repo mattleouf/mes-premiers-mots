@@ -31,11 +31,9 @@ body {
   border-style: solid;
 }
 .tiles {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
   position: relative;
+  height: 35vh;
+  max-height: 300px;
 }
 .tile {
   width: 40px;
@@ -48,6 +46,10 @@ body {
   justify-content: center;
   font-size: 2rem;
   cursor: grab;
+  position: absolute;
+}
+.slot.hover {
+  box-shadow: 0 0 0 4px rgba(255, 165, 0, 0.6);
 }
 .next {
   margin-top: 2rem;

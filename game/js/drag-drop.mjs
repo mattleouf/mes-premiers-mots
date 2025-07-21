@@ -1,5 +1,19 @@
 export function setupDragDrop(slots, tiles, onComplete) {
   const isComplete = () => slots.every((s) => s.classList.contains('filled'));
+  let current;
+
+  const intersectingSlot = (tile) => {
+    const t = tile.getBoundingClientRect();
+    return slots.find((slot) => {
+      const r = slot.getBoundingClientRect();
+      return (
+        t.right > r.left &&
+        t.left < r.right &&
+        t.bottom > r.top &&
+        t.top < r.bottom
+      );
+    });
+  };
 
   tiles.forEach((tile) => {
     tile.draggable = false;
@@ -10,6 +24,20 @@ export function setupDragDrop(slots, tiles, onComplete) {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
       tile.style.transform = `translate(${dx}px, ${dy}px)`;
+
+      const over = intersectingSlot(tile);
+      if (over !== current) {
+        if (current) current.classList.remove('hover');
+        if (over && !over.textContent) over.classList.add('hover');
+        current = over;
+      }
+    };
+
+    const clearHover = () => {
+      if (current) {
+        current.classList.remove('hover');
+        current = null;
+      }
     };
 
     const end = (e) => {
@@ -17,17 +45,9 @@ export function setupDragDrop(slots, tiles, onComplete) {
       tile.removeEventListener('pointerup', end);
       tile.removeEventListener('pointercancel', end);
       tile.releasePointerCapture(e.pointerId);
+      const dropSlot = intersectingSlot(tile);
       tile.style.transform = '';
-
-      const dropSlot = slots.find((slot) => {
-        const r = slot.getBoundingClientRect();
-        return (
-          e.clientX >= r.left &&
-          e.clientX <= r.right &&
-          e.clientY >= r.top &&
-          e.clientY <= r.bottom
-        );
-      });
+      clearHover();
 
       if (dropSlot && !dropSlot.textContent) {
         const letter = tile.textContent;
