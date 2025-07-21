@@ -3,7 +3,12 @@ import { allSlotsFilled } from './word-check.mjs';
 import { playSuccess } from './audio.mjs';
 
 async function loadWords() {
-  const res = await fetch('../data/words-fr.json');
+  // When the game is loaded from /game/index.html, the words JSON
+  // lives in the sibling "data" directory. The previous relative
+  // path used "../data" which incorrectly pointed one level above
+  // the game folder, resulting in a 404 and an empty screen. Use the
+  // correct relative path so the word list loads properly.
+  const res = await fetch('data/words-fr.json');
   return res.json();
 }
 
