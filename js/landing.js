@@ -8,7 +8,9 @@ window.addEventListener('DOMContentLoaded', () => {
   const size = 60; // match CSS
 
   const randomLetter = () => letters[Math.floor(Math.random() * letters.length)];
-  const randomVelocity = () => (Math.random() * 0.4 + 0.2) * (Math.random() < 0.5 ? -1 : 1);
+  // Slightly faster movement than before
+  const randomVelocity = () =>
+    (Math.random() * 0.4 + 0.2) * 1.2 * (Math.random() < 0.5 ? -1 : 1);
 
   const states = [];
 
@@ -45,52 +47,54 @@ window.addEventListener('DOMContentLoaded', () => {
     const maxY = window.innerHeight - size;
 
     // move and bounce on edges
-    for (const s of states) {
+    states.forEach((s, idx) => {
       s.x += s.vx;
       s.y += s.vy;
 
       if (s.x <= 0 || s.x >= maxX) {
         s.vx *= -1;
         s.x = Math.max(0, Math.min(s.x, maxX));
+        tiles[idx].textContent = randomLetter();
       }
       if (s.y <= 0 || s.y >= maxY) {
         s.vy *= -1;
         s.y = Math.max(0, Math.min(s.y, maxY));
+        tiles[idx].textContent = randomLetter();
       }
-    }
+    });
 
-    // collisions between tiles
+    // collisions between tiles (simple elastic swap)
     for (let i = 0; i < states.length; i++) {
       for (let j = i + 1; j < states.length; j++) {
         const a = states[i];
         const b = states[j];
         if (Math.abs(a.x - b.x) < size && Math.abs(a.y - b.y) < size) {
-          const tmpVx = a.vx;
-          const tmpVy = a.vy;
-          a.vx = b.vx;
-          a.vy = b.vy;
-          b.vx = tmpVx;
-          b.vy = tmpVy;
-
-          const overlapX = size - Math.abs(a.x - b.x);
-          const overlapY = size - Math.abs(a.y - b.y);
-          if (overlapX > 0) {
-            if (a.x < b.x) {
-              a.x -= overlapX / 2;
-              b.x += overlapX / 2;
+          const dx = a.x - b.x;
+          const dy = a.y - b.y;
+          if (Math.abs(dx) > Math.abs(dy)) {
+            const overlap = size - Math.abs(dx);
+            if (dx > 0) {
+              a.x += overlap / 2;
+              b.x -= overlap / 2;
             } else {
-              a.x += overlapX / 2;
-              b.x -= overlapX / 2;
+              a.x -= overlap / 2;
+              b.x += overlap / 2;
             }
-          }
-          if (overlapY > 0) {
-            if (a.y < b.y) {
-              a.y -= overlapY / 2;
-              b.y += overlapY / 2;
+            const tmp = a.vx;
+            a.vx = b.vx;
+            b.vx = tmp;
+          } else {
+            const overlap = size - Math.abs(dy);
+            if (dy > 0) {
+              a.y += overlap / 2;
+              b.y -= overlap / 2;
             } else {
-              a.y += overlapY / 2;
-              b.y -= overlapY / 2;
+              a.y -= overlap / 2;
+              b.y += overlap / 2;
             }
+            const tmp = a.vy;
+            a.vy = b.vy;
+            b.vy = tmp;
           }
         }
       }
