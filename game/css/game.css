@@ -1,1 +1,51 @@
 /* Game screen styling */
+body {
+  text-align: center;
+  padding-top: 2rem;
+}
+#picture {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+.word {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+.slot {
+  width: 40px;
+  height: 50px;
+  border: 2px dashed #555;
+  border-radius: 6px;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slot.filled {
+  border-style: solid;
+}
+.tiles {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.tile {
+  width: 40px;
+  height: 50px;
+  background: #fdfdfd;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  cursor: grab;
+}
+.next {
+  margin-top: 2rem;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
