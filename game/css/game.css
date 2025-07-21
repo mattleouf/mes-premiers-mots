@@ -5,8 +5,10 @@ body {
   overflow: hidden; /* prevent page scrolling during gameplay */
 }
 #picture {
-  font-size: 5rem;
-  margin-bottom: 1rem;
+  /* enlarge the emoji display */
+  font-size: 6.5rem;
+  /* push following elements down a bit for spacing */
+  margin-bottom: 1.5rem;
 }
 .word {
   display: flex;
