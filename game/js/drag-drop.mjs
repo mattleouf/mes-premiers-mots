@@ -1,3 +1,5 @@
+import { playSuccess } from './audio.mjs';
+
 export function setupDragDrop(slots, tiles, onComplete) {
   const isComplete = () => slots.every((s) => s.classList.contains('filled'));
   let current;
@@ -49,19 +51,21 @@ export function setupDragDrop(slots, tiles, onComplete) {
       tile.style.transform = '';
       clearHover();
 
-      if (dropSlot && !dropSlot.classList.contains('filled')) {
-        const letter = tile.textContent;
-        if (letter === dropSlot.dataset.letter) {
-          dropSlot.textContent = letter;
-          dropSlot.classList.add('filled');
-          dropSlot.classList.remove('preview');
-          tile.used = true;
-          tile.style.visibility = 'hidden';
-          if (isComplete()) {
-            onComplete();
+        if (dropSlot && !dropSlot.classList.contains('filled')) {
+          const letter = tile.textContent;
+          if (letter === dropSlot.dataset.letter) {
+            dropSlot.textContent = letter;
+            dropSlot.classList.add('filled', 'placed');
+            dropSlot.classList.remove('preview');
+            tile.used = true;
+            tile.style.visibility = 'hidden';
+            playSuccess();
+            dropSlot.addEventListener('animationend', () => dropSlot.classList.remove('placed'), { once: true });
+            if (isComplete()) {
+              onComplete();
+            }
           }
         }
-      }
     };
 
     tile.addEventListener('pointerdown', (e) => {
