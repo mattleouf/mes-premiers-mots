@@ -16,9 +16,42 @@ async function loadWords() {
   return res.json();
 }
 
-function pickWord(words) {
-  return words[Math.floor(Math.random() * words.length)];
+// Word playlist management
+let wordList = [];
+let playlist = [];
+let playlistIndex = 0;
+let previousWord = null;
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
 }
+
+function nextWord() {
+  if (playlist.length === 0 || playlistIndex >= playlist.length) {
+    playlist = [...wordList];
+    shuffle(playlist);
+    if (
+      previousWord &&
+      playlist.length > 1 &&
+      playlist[0].word === previousWord.word
+    ) {
+      // ensure we don't repeat the same word twice in a row
+      const swapIdx = playlist.findIndex((w) => w.word !== previousWord.word);
+      if (swapIdx > 0) {
+        [playlist[0], playlist[swapIdx]] = [playlist[swapIdx], playlist[0]];
+      }
+    }
+    playlistIndex = 0;
+  }
+  const wordObj = playlist[playlistIndex];
+  playlistIndex++;
+  previousWord = wordObj;
+  return wordObj;
+}
+
 
 function createSlots(word) {
   const container = document.getElementById('word');
@@ -209,13 +242,11 @@ function showWord(wordObj) {
   nextBtn.onclick = () => startGame();
 }
 
-let wordList = [];
-
 async function startGame() {
   if (wordList.length === 0) {
     wordList = await loadWords();
   }
-  const word = pickWord(wordList);
+  const word = nextWord();
   showWord(word);
 }
 

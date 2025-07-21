@@ -90,7 +90,7 @@ mes-premiers-mots/
 │   │   ├── drag-drop.mjs   ← touch & pointer handling
 │   │   ├── word-check.mjs  ← validation logic
 │   │   └── audio.mjs       ← sound effects
-│   ├── data/words-fr.json ← word list (with associated pictures)
+│   ├── data/words-fr.json ← word list (edit to add/remove words)
 │   └── assets/
 │       ├── img/            ← pictures
 │       └── sfx/            ← sound effects
