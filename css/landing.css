@@ -59,6 +59,8 @@ body {
 
 #flying-tile {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 60px;
   height: 60px;
   background: #fdfdfd;

@@ -13,6 +13,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const randomLetter = () => letters[Math.floor(Math.random() * letters.length)];
   tile.textContent = randomLetter();
+  tile.style.transform = `translate(${x}px, ${y}px)`;
 
   const step = () => {
     x += vx;
