@@ -28,7 +28,7 @@ export function setupDragDrop(slots, tiles, onComplete) {
       const over = intersectingSlot(tile);
       if (over !== current) {
         if (current) current.classList.remove('hover');
-        if (over && !over.textContent) over.classList.add('hover');
+        if (over && !over.classList.contains('filled')) over.classList.add('hover');
         current = over;
       }
     };
@@ -49,7 +49,7 @@ export function setupDragDrop(slots, tiles, onComplete) {
       tile.style.transform = '';
       clearHover();
 
-      if (dropSlot && !dropSlot.textContent) {
+      if (dropSlot && !dropSlot.classList.contains('filled')) {
         const letter = tile.textContent;
         if (letter === dropSlot.dataset.letter) {
           dropSlot.textContent = letter;
