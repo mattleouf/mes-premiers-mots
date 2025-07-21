@@ -54,6 +54,13 @@ body {
 }
 .next {
   margin-top: 2rem;
+  position: fixed;
+  left: 50%;
+  top: 60%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-size: 1.5rem;
+  padding: 1rem 2rem;
 }
 
 .btn {
@@ -90,6 +97,11 @@ body {
   margin-top: 1rem;
   display: none;
   pointer-events: none;
+  position: fixed;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
 }
 
 #message.show {
