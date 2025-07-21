@@ -45,10 +45,15 @@ function createTiles(word) {
     [letters[i], letters[j]] = [letters[j], letters[i]];
   }
   const tiles = [];
+  const { width, height } = container.getBoundingClientRect();
   for (const letter of letters) {
     const d = document.createElement('div');
     d.className = 'tile';
     d.textContent = letter;
+    const x = Math.random() * (width - 40);
+    const y = Math.random() * (height - 50);
+    d.style.left = `${x}px`;
+    d.style.top = `${y}px`;
     container.appendChild(d);
     tiles.push(d);
   }
