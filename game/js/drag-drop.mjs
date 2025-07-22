@@ -8,11 +8,13 @@ export function setupDragDrop(slots, tiles, onComplete) {
     const t = tile.getBoundingClientRect();
     return slots.find((slot) => {
       const r = slot.getBoundingClientRect();
+      const expandedTop = r.top - r.height * 0.25;
+      const expandedBottom = r.bottom + r.height * 0.25;
       return (
         t.right > r.left &&
         t.left < r.right &&
-        t.bottom > r.top &&
-        t.top < r.bottom
+        t.bottom > expandedTop &&
+        t.top < expandedBottom
       );
     });
   };
