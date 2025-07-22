@@ -5,6 +5,7 @@ import { playSuccess } from './audio.mjs';
 let confettiInterval;
 let bounceCount = 0;
 let bounceHandler;
+let currentTiles = [];
 
 async function loadWords() {
   // When the game is loaded from /game/index.html, the words JSON
@@ -192,6 +193,17 @@ function celebrate() {
   msg.classList.add('show');
   startConfetti();
   startPictureAnimation();
+  setTimeout(dropUnusedTiles, 400);
+}
+
+function dropUnusedTiles() {
+  currentTiles.forEach((tile) => {
+    if (tile.used) return;
+    tile.classList.add('drop');
+    tile.style.setProperty('--spin', `${Math.random() * 60 - 30}deg`);
+    tile.style.setProperty('--duration', `${1 + Math.random()}s`);
+    tile.addEventListener('animationend', () => tile.remove(), { once: true });
+  });
 }
 
 async function animateWordReveal(slots) {
@@ -229,6 +241,7 @@ function showWord(wordObj) {
   document.getElementById('picture').textContent = wordObj.emoji;
   const slots = createSlots(wordObj.word);
   const tiles = createTiles(wordObj.word);
+  currentTiles = tiles;
   const nextBtn = document.getElementById('next');
   nextBtn.style.display = 'none';
   document.getElementById('message').classList.remove('show');
