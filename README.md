@@ -27,6 +27,7 @@ Visual targets	Faint, outlined letters act as soft guidance without making the a
 Positive reinforcement	Correct placement triggers gentle animations and sounds (e.g., a “pop” or happy chime).
 Negative feedback	Wrong placement gives immediate but soft feedback (e.g., shake effect, gentle “nope” sound).
 Completion celebration	When a word is completed, a short success animation plays, followed by a “Nouveau mot” button to continue playing.
+Word history        Each solved word's emoji appears at the bottom of the screen and stays for the session until returning to the start page.
 Simple navigation	Only two main screens: Landing Page and Game. Options accessible via a gear icon (to skip puzzles, toggle settings).
 No distractions	Minimal text, no advertisements, no popups—pure focus on the learning experience.
 

@@ -168,3 +168,20 @@ body {
   }
 }
 
+/* Word history at bottom of screen */
+.history {
+  position: fixed;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(10, auto);
+  gap: 0.25rem 0.5rem;
+  max-width: 100%;
+  pointer-events: none;
+}
+
+.history-emoji {
+  font-size: 1.5rem;
+}
+
