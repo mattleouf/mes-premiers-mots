@@ -303,8 +303,32 @@ async function startGame() {
   showWord(word);
 }
 
+function openSettings() {
+  document.getElementById('settings-modal').classList.remove('hidden');
+}
+
+function closeSettings() {
+  document.getElementById('settings-modal').classList.add('hidden');
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   loadHistory();
   renderHistory();
   startGame();
+
+  const settingsBtn = document.getElementById('settings-btn');
+  const continueBtn = document.getElementById('continue-btn');
+  const skipBtn = document.getElementById('skip-btn');
+  const menuBtn = document.getElementById('menu-btn');
+
+  settingsBtn.addEventListener('click', openSettings);
+  continueBtn.addEventListener('click', closeSettings);
+  skipBtn.addEventListener('click', () => {
+    closeSettings();
+    startGame();
+  });
+  menuBtn.addEventListener('click', () => {
+    sessionStorage.removeItem('wordHistory');
+    window.location.href = '../';
+  });
 });
