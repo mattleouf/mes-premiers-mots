@@ -23,7 +23,7 @@ function renderHistory() {
   const container = document.getElementById('history');
   if (!container) return;
   container.innerHTML = '';
-  const recent = wordHistory.slice(-30);
+  const recent = wordHistory.slice(-30).reverse();
   recent.forEach((emoji) => {
     const span = document.createElement('span');
     span.className = 'history-emoji';
