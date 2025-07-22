@@ -73,7 +73,7 @@ function createTiles(word) {
   container.innerHTML = '';
   const letters = word.split('');
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  while (letters.length < word.length + 3) {
+  while (letters.length < word.length + 5) {
     letters.push(alphabet[Math.floor(Math.random() * alphabet.length)]);
   }
   // simple shuffle
@@ -87,10 +87,11 @@ function createTiles(word) {
   const tileW = 40;
   const tileH = 50;
   const spacing = 10;
+  const marginX = tileW; // keep one tile empty on each side
 
   const nonOverlappingPos = () => {
     for (let tries = 0; tries < 50; tries++) {
-      const x = Math.random() * (width - tileW);
+      const x = marginX + Math.random() * (width - 3 * tileW);
       const y = Math.random() * (height - tileH);
       let overlap = false;
       for (const p of positions) {
@@ -101,7 +102,10 @@ function createTiles(word) {
       }
       if (!overlap) return { x, y };
     }
-    return { x: Math.random() * (width - tileW), y: Math.random() * (height - tileH) };
+    return {
+      x: marginX + Math.random() * (width - 3 * tileW),
+      y: Math.random() * (height - tileH)
+    };
   };
 
   for (const letter of letters) {
