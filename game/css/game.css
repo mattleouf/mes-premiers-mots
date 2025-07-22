@@ -157,3 +157,14 @@ body {
   100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
 }
 
+.tile.drop {
+  animation: tile-fall var(--duration, 1.2s) cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+
+@keyframes tile-fall {
+  to {
+    transform: translateY(120vh) rotate(var(--spin, 45deg));
+    opacity: 0;
+  }
+}
+
