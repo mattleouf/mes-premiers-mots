@@ -7,6 +7,40 @@ let bounceCount = 0;
 let bounceHandler;
 let currentTiles = [];
 
+// Emoji history management
+let wordHistory = [];
+
+function loadHistory() {
+  const stored = sessionStorage.getItem('wordHistory');
+  wordHistory = stored ? JSON.parse(stored) : [];
+}
+
+function saveHistory() {
+  sessionStorage.setItem('wordHistory', JSON.stringify(wordHistory));
+}
+
+function renderHistory() {
+  const container = document.getElementById('history');
+  if (!container) return;
+  container.innerHTML = '';
+  const recent = wordHistory.slice(-30);
+  recent.forEach((emoji) => {
+    const span = document.createElement('span');
+    span.className = 'history-emoji';
+    span.textContent = emoji;
+    container.appendChild(span);
+  });
+}
+
+function addToHistory(emoji) {
+  wordHistory.push(emoji);
+  if (wordHistory.length > 30) {
+    wordHistory = wordHistory.slice(-30);
+  }
+  saveHistory();
+  renderHistory();
+}
+
 async function loadWords() {
   // When the game is loaded from /game/index.html, the words JSON
   // lives in the sibling "data" directory. The previous relative
@@ -252,6 +286,7 @@ function showWord(wordObj) {
     if (allSlotsFilled(slots)) {
       playSuccess();
       animateWordReveal(slots).then(() => {
+        addToHistory(wordObj.emoji);
         celebrate();
         nextBtn.style.display = 'inline-block';
       });
@@ -268,4 +303,8 @@ async function startGame() {
   showWord(word);
 }
 
-window.addEventListener('DOMContentLoaded', startGame);
+window.addEventListener('DOMContentLoaded', () => {
+  loadHistory();
+  renderHistory();
+  startGame();
+});

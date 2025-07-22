@@ -1,5 +1,7 @@
 // Landing page interactions
 window.addEventListener('DOMContentLoaded', () => {
+  // Reset word history when returning to the start screen
+  sessionStorage.removeItem('wordHistory');
   const play = document.getElementById('play');
   const options = document.getElementById('options');
   const tiles = Array.from(document.querySelectorAll('.flying-tile'));
