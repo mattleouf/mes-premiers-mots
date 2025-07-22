@@ -201,7 +201,8 @@ function dropUnusedTiles() {
     if (tile.used) return;
     tile.classList.add('drop');
     tile.style.setProperty('--spin', `${Math.random() * 60 - 30}deg`);
-    tile.style.setProperty('--duration', `${1 + Math.random()}s`);
+    tile.style.setProperty('--duration', `${1.5 + Math.random()}s`);
+    tile.style.setProperty('--delay', `${Math.random() * 0.5}s`);
     tile.addEventListener('animationend', () => tile.remove(), { once: true });
   });
 }

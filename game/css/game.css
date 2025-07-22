@@ -61,8 +61,8 @@ body {
   top: 60%;
   transform: translateX(-50%);
   z-index: 2;
-  font-size: 1.5rem;
-  padding: 1rem 2rem;
+  font-size: 2rem;
+  padding: 1.25rem 2.5rem;
 }
 
 .btn {
@@ -158,7 +158,7 @@ body {
 }
 
 .tile.drop {
-  animation: tile-fall var(--duration, 1.2s) cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+  animation: tile-fall var(--duration, 1.6s) cubic-bezier(0.2, 0.8, 0.4, 1) var(--delay, 0s) forwards;
 }
 
 @keyframes tile-fall {
