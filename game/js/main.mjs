@@ -119,9 +119,10 @@ function createTiles(word) {
   const tiles = [];
   const positions = [];
   const { width, height } = container.getBoundingClientRect();
-  const tileW = 40;
-  const tileH = 50;
-  const spacing = 10;
+  const style = getComputedStyle(document.documentElement);
+  const tileW = parseFloat(style.getPropertyValue('--tile-width'));
+  const tileH = parseFloat(style.getPropertyValue('--tile-height'));
+  const spacing = tileW * 0.25;
   const marginX = tileW; // keep one tile empty on each side
 
   const nonOverlappingPos = () => {

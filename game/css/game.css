@@ -1,4 +1,13 @@
 /* Game screen styling */
+:root {
+  --tile-width: clamp(40px, 10vw, 80px);
+  --tile-height: clamp(50px, 12vw, 100px);
+  --tile-font: clamp(2rem, 5vw, 3rem);
+  --picture-size: clamp(6.5rem, 20vw, 12rem);
+  --btn-font: clamp(1rem, 3vw, 1.5rem);
+  --next-font: clamp(2rem, 5vw, 3rem);
+}
+
 body {
   text-align: center;
   padding-top: 2rem;
@@ -6,7 +15,7 @@ body {
 }
 #picture {
   /* enlarge the emoji display */
-  font-size: 6.5rem;
+  font-size: var(--picture-size);
   /* push following elements down a bit for spacing */
   margin-bottom: 1.5rem;
 }
@@ -17,11 +26,11 @@ body {
   margin-bottom: 2rem;
 }
 .slot {
-  width: 40px;
-  height: 50px;
+  width: var(--tile-width);
+  height: var(--tile-height);
   border: 2px dashed #555;
   border-radius: 6px;
-  font-size: 2rem;
+  font-size: var(--tile-font);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,18 +45,18 @@ body {
 .tiles {
   position: relative;
   height: 35vh;
-  max-height: 300px;
+  max-height: clamp(300px, 40vh, 500px);
 }
 .tile {
-  width: 40px;
-  height: 50px;
+  width: var(--tile-width);
+  height: var(--tile-height);
   background: #fdfdfd;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: var(--tile-font);
   cursor: grab;
   position: absolute;
 }
@@ -61,12 +70,12 @@ body {
   top: 60%;
   transform: translateX(-50%);
   z-index: 2;
-  font-size: 2rem;
+  font-size: var(--next-font);
   padding: 1.25rem 2.5rem;
 }
 
 .btn {
-  font-size: 1rem;
+  font-size: var(--btn-font);
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
@@ -182,7 +191,7 @@ body {
 }
 
 .history-emoji {
-  font-size: 1.5rem;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 /* Settings button */
@@ -192,7 +201,7 @@ body {
   right: 0.25rem;
   background: none;
   border: none;
-  font-size: 1.6rem;
+  font-size: clamp(1.6rem, 4vw, 3rem);
   cursor: pointer;
   z-index: 3;
 }
