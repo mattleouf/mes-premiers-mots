@@ -320,9 +320,15 @@ window.addEventListener('DOMContentLoaded', () => {
   const continueBtn = document.getElementById('continue-btn');
   const skipBtn = document.getElementById('skip-btn');
   const menuBtn = document.getElementById('menu-btn');
+  const settingsModal = document.getElementById('settings-modal');
 
   settingsBtn.addEventListener('click', openSettings);
   continueBtn.addEventListener('click', closeSettings);
+  settingsModal.addEventListener('click', (e) => {
+    if (e.target === settingsModal) {
+      closeSettings();
+    }
+  });
   skipBtn.addEventListener('click', () => {
     closeSettings();
     startGame();
