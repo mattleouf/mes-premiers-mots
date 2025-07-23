@@ -189,10 +189,10 @@ body {
 .settings-btn {
   position: fixed;
   top: 0.5rem;
-  right: 0.5rem;
+  right: 0.25rem;
   background: none;
   border: none;
-  font-size: 2rem;
+  font-size: 1.6rem;
   cursor: pointer;
   z-index: 3;
 }
@@ -227,6 +227,11 @@ body {
 
 .btn.options {
   background-color: #2196f3;
+  color: #fff;
+}
+
+#menu-btn {
+  background-color: #f44336;
   color: #fff;
 }
 
