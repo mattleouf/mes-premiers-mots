@@ -119,9 +119,16 @@ function createTiles(word) {
   const tiles = [];
   const positions = [];
   const { width, height } = container.getBoundingClientRect();
-  const style = getComputedStyle(document.documentElement);
-  const tileW = parseFloat(style.getPropertyValue('--tile-width'));
-  const tileH = parseFloat(style.getPropertyValue('--tile-height'));
+
+  // Measure an existing slot to get the actual tile dimensions as rendered by
+  // CSS. This avoids relying on custom property strings like
+  // "clamp(40px, 10vw, 80px)" which cannot be parsed directly to pixel values.
+  const sampleSlot = document.querySelector('.slot');
+  const slotRect = sampleSlot
+    ? sampleSlot.getBoundingClientRect()
+    : { width: 40, height: 50 };
+  const tileW = slotRect.width;
+  const tileH = slotRect.height;
   const spacing = tileW * 0.25;
   const marginX = tileW; // keep one tile empty on each side
 
