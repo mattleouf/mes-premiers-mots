@@ -133,18 +133,23 @@ function createTiles(word) {
   const marginX = tileW; // keep one tile empty on each side
 
   const nonOverlappingPos = () => {
-    for (let tries = 0; tries < 50; tries++) {
+    const maxAttempts = 200;
+    const minDist = Math.max(tileW, tileH) * 1.1;
+    for (let tries = 0; tries < maxAttempts; tries++) {
       const x = marginX + Math.random() * (width - 3 * tileW);
       const y = Math.random() * (height - tileH);
       let overlap = false;
       for (const p of positions) {
-        if (Math.abs(p.x - x) < tileW + spacing && Math.abs(p.y - y) < tileH + spacing) {
+        const dx = p.x - x;
+        const dy = p.y - y;
+        if (Math.hypot(dx, dy) < minDist) {
           overlap = true;
           break;
         }
       }
       if (!overlap) return { x, y };
     }
+    // As a safety net, allow slight overlap after many failed attempts
     return {
       x: marginX + Math.random() * (width - 3 * tileW),
       y: Math.random() * (height - tileH)
