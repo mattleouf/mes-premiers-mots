@@ -8,14 +8,11 @@ export function setupDragDrop(slots, tiles, onComplete) {
     const t = tile.getBoundingClientRect();
     return slots.find((slot) => {
       const r = slot.getBoundingClientRect();
-      const expand = 0.35;
-      const expandedTop = r.top - r.height * expand;
-      const expandedBottom = r.bottom + r.height * expand;
-      const expandedLeft = r.left - r.width * expand;
-      const expandedRight = r.right + r.width * expand;
+      const expandedTop = r.top - r.height * 0.25;
+      const expandedBottom = r.bottom + r.height * 0.25;
       return (
-        t.right > expandedLeft &&
-        t.left < expandedRight &&
+        t.right > r.left &&
+        t.left < r.right &&
         t.bottom > expandedTop &&
         t.top < expandedBottom
       );
@@ -53,53 +50,24 @@ export function setupDragDrop(slots, tiles, onComplete) {
       tile.removeEventListener('pointercancel', end);
       tile.releasePointerCapture(e.pointerId);
       const dropSlot = intersectingSlot(tile);
+      tile.style.transform = '';
       clearHover();
 
-      if (dropSlot && !dropSlot.classList.contains('filled')) {
-        const letter = tile.textContent;
-        if (letter === dropSlot.dataset.letter) {
-          const tileRect = tile.getBoundingClientRect();
-          const slotRect = dropSlot.getBoundingClientRect();
-          const dx = slotRect.left - tileRect.left;
-          const dy = slotRect.top - tileRect.top;
-          tile.style.transition = 'transform 0.2s ease';
-          tile.style.transform = `translate(${dx}px, ${dy}px)`;
-          tile.addEventListener(
-            'transitionend',
-            () => {
-              tile.style.visibility = 'hidden';
-              tile.style.transition = '';
-              tile.style.transform = '';
-            },
-            { once: true }
-          );
-
-          dropSlot.textContent = letter;
-          dropSlot.classList.add('filled', 'placed');
-          dropSlot.classList.remove('preview');
-          tile.used = true;
-          playSuccess();
-          dropSlot.addEventListener(
-            'animationend',
-            () => dropSlot.classList.remove('placed'),
-            { once: true }
-          );
-          if (isComplete()) {
-            onComplete();
+        if (dropSlot && !dropSlot.classList.contains('filled')) {
+          const letter = tile.textContent;
+          if (letter === dropSlot.dataset.letter) {
+            dropSlot.textContent = letter;
+            dropSlot.classList.add('filled', 'placed');
+            dropSlot.classList.remove('preview');
+            tile.used = true;
+            tile.style.visibility = 'hidden';
+            playSuccess();
+            dropSlot.addEventListener('animationend', () => dropSlot.classList.remove('placed'), { once: true });
+            if (isComplete()) {
+              onComplete();
+            }
           }
-          return;
         }
-      }
-
-      tile.style.transition = 'transform 0.2s ease';
-      tile.style.transform = '';
-      tile.addEventListener(
-        'transitionend',
-        () => {
-          tile.style.transition = '';
-        },
-        { once: true }
-      );
     };
 
     tile.addEventListener('pointerdown', (e) => {
