@@ -3,6 +3,7 @@ body {
   background: #f7f7f5;
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -11,14 +12,12 @@ body {
 
 @media (orientation: portrait) {
   body {
-    justify-content: flex-start;
-    padding-top: 30vh;
+    padding-top: 20vh;
   }
 }
 
 @media (orientation: landscape) {
   body {
-    justify-content: center;
     padding-top: 0;
   }
 }
@@ -56,10 +55,10 @@ body {
 }
 
 @keyframes color-cycle {
-  0% { color: #ff9a9e; }
-  33% { color: #ffb480; }
-  66% { color: #f6cd61; }
-  100% { color: #ff9a9e; }
+  0% { color: #ff3333; }
+  33% { color: #ff7700; }
+  66% { color: #ffee00; }
+  100% { color: #ff3333; }
 }
 
 
