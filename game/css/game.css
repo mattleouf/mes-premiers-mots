@@ -75,6 +75,9 @@ body {
 .slot.wrong {
   animation: flash-red 0.3s;
 }
+.slot.flash-letter {
+  animation: flash-letter-red 0.3s;
+}
 .next {
   margin-top: 2rem;
   position: fixed;
@@ -199,6 +202,11 @@ body {
 @keyframes flash-red {
   from { box-shadow: 0 0 0 4px red; }
   to { box-shadow: 0 0 0 4px transparent; }
+}
+
+@keyframes flash-letter-red {
+  from { color: red; }
+  to { color: #000; }
 }
 
 /* Word history at bottom of screen */
