@@ -48,6 +48,10 @@ export function setupDragDrop(slots, tiles, onComplete) {
       tile.removeEventListener('pointermove', move);
       tile.removeEventListener('pointerup', end);
       tile.removeEventListener('pointercancel', end);
+      // Ensure the tile position reflects the final pointer location.
+      // Fast drags may not fire a last pointermove, so manually update
+      // using the pointerup coordinates before evaluating the drop.
+      move(e);
       tile.releasePointerCapture(e.pointerId);
       const dropSlot = intersectingSlot(tile);
       tile.style.transition = 'transform 0.2s';
