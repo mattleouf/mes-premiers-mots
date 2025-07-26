@@ -16,15 +16,20 @@ body {
   z-index: 1;
 }
 
+
+
+/* animated heading */
 .title {
   margin-bottom: 0.5rem;
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  animation: color-cycle 8s linear infinite;
 }
 
-.title-logo {
-  display: block;
-  width: clamp(200px, 60vw, 350px);
-  height: auto;
-  margin: 0 auto;
+@keyframes color-cycle {
+  0% { color: #ff9a9e; }
+  33% { color: #ffb480; }
+  66% { color: #f6cd61; }
+  100% { color: #ff9a9e; }
 }
 
 .tagline {
