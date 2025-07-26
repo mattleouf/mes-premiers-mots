@@ -1,4 +1,4 @@
-import { playSuccess } from './audio.mjs';
+import { playSuccess, playError } from './audio.mjs';
 
 export function setupDragDrop(slots, tiles, onComplete) {
   const isComplete = () => slots.every((s) => s.classList.contains('filled'));
@@ -27,7 +27,7 @@ export function setupDragDrop(slots, tiles, onComplete) {
     const move = (e) => {
       const dx = e.clientX - startX;
       const dy = e.clientY - startY;
-      tile.style.transform = `translate(${dx}px, ${dy}px)`;
+      tile.style.transform = `translate(${dx}px, ${dy}px) scale(1.1)`;
 
       const over = intersectingSlot(tile);
       if (over !== current) {
@@ -50,24 +50,34 @@ export function setupDragDrop(slots, tiles, onComplete) {
       tile.removeEventListener('pointercancel', end);
       tile.releasePointerCapture(e.pointerId);
       const dropSlot = intersectingSlot(tile);
+      tile.style.transition = 'transform 0.2s';
       tile.style.transform = '';
       clearHover();
-
-        if (dropSlot && !dropSlot.classList.contains('filled')) {
-          const letter = tile.textContent;
-          if (letter === dropSlot.dataset.letter) {
-            dropSlot.textContent = letter;
-            dropSlot.classList.add('filled', 'placed');
-            dropSlot.classList.remove('preview');
-            tile.used = true;
-            tile.style.visibility = 'hidden';
-            playSuccess();
-            dropSlot.addEventListener('animationend', () => dropSlot.classList.remove('placed'), { once: true });
-            if (isComplete()) {
-              onComplete();
-            }
+      if (dropSlot && !dropSlot.classList.contains('filled')) {
+        const letter = tile.textContent;
+        if (letter === dropSlot.dataset.letter) {
+          dropSlot.textContent = letter;
+          dropSlot.classList.add('filled', 'placed');
+          dropSlot.classList.remove('preview');
+          tile.used = true;
+          tile.style.visibility = 'hidden';
+          playSuccess();
+          dropSlot.addEventListener('animationend', () => dropSlot.classList.remove('placed'), { once: true });
+          if (isComplete()) {
+            onComplete();
           }
+        } else {
+          dropSlot.classList.add('wrong');
+          tile.classList.add('shake');
+          playError();
+          dropSlot.addEventListener('animationend', () => dropSlot.classList.remove('wrong'), { once: true });
+          tile.addEventListener('animationend', () => tile.classList.remove('shake'), { once: true });
         }
+      }
+      tile.addEventListener('transitionend', () => {
+        tile.style.transition = '';
+      }, { once: true });
+      tile.classList.remove('active');
     };
 
     tile.addEventListener('pointerdown', (e) => {
@@ -75,6 +85,7 @@ export function setupDragDrop(slots, tiles, onComplete) {
       startX = e.clientX;
       startY = e.clientY;
       tile.setPointerCapture(e.pointerId);
+      tile.classList.add('active');
       tile.addEventListener('pointermove', move);
       tile.addEventListener('pointerup', end);
       tile.addEventListener('pointercancel', end);

@@ -44,6 +44,12 @@ Animations	Subtle, low-framerate-friendly animations for snaps, shakes, and succ
 Sound effects	Short, clear sounds to reinforce correct/incorrect actions without being overwhelming. Optional pronunciation audio clips after success.
 
 
+Updated Visual Feedback Instructions
+        •       Tile Drag/Select Animation: when a tile is picked up or tapped, scale it up slightly and grow its shadow to show it is lifted.
+        •       Slot Hover Feedback: hovering over any free slot should highlight it with a brighter border or background so the drop zone is obvious.
+        •       Incorrect Drop Feedback: if a tile is released on the wrong slot, the slot outline briefly flashes red, the tile shakes then returns to its original position, and a short negative audio cue plays.
+
+
 ⸻
 
 Structure of the Game Flow
