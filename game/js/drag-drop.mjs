@@ -3,6 +3,7 @@ import { playSuccess, playError } from './audio.mjs';
 export function setupDragDrop(slots, tiles, onComplete) {
   const isComplete = () => slots.every((s) => s.classList.contains('filled'));
   let current;
+  let outerTarget;
 
   const intersectingSlot = (tile) => {
     const t = tile.getBoundingClientRect();
@@ -19,6 +20,19 @@ export function setupDragDrop(slots, tiles, onComplete) {
     });
   };
 
+  const inOuterHitbox = (tile, slot) => {
+    const t = tile.getBoundingClientRect();
+    const r = slot.getBoundingClientRect();
+    const marginX = r.width * 0.15; // 30% larger overall
+    const marginY = r.height * 0.15;
+    return (
+      t.right > r.left - marginX &&
+      t.left < r.right + marginX &&
+      t.bottom > r.top - marginY &&
+      t.top < r.bottom + marginY
+    );
+  };
+
   tiles.forEach((tile) => {
     tile.draggable = false;
     tile.style.touchAction = 'none';
@@ -31,8 +45,14 @@ export function setupDragDrop(slots, tiles, onComplete) {
 
       const over = intersectingSlot(tile);
       if (over !== current) {
-        if (current) current.classList.remove('hover');
-        if (over && !over.classList.contains('filled')) over.classList.add('hover');
+        if (current) {
+          current.classList.remove('hover');
+          outerTarget = current; // activate outer hitbox for previous slot
+        }
+        if (over && !over.classList.contains('filled')) {
+          over.classList.add('hover');
+          outerTarget = null; // inner hover takes priority
+        }
         current = over;
       }
     };
@@ -40,6 +60,7 @@ export function setupDragDrop(slots, tiles, onComplete) {
     const clearHover = () => {
       if (current) {
         current.classList.remove('hover');
+        outerTarget = current;
         current = null;
       }
     };
@@ -53,10 +74,14 @@ export function setupDragDrop(slots, tiles, onComplete) {
       // using the pointerup coordinates before evaluating the drop.
       move(e);
       tile.releasePointerCapture(e.pointerId);
-      const dropSlot = intersectingSlot(tile);
+      let dropSlot = intersectingSlot(tile);
+      if (!dropSlot && outerTarget && !outerTarget.classList.contains('filled') && inOuterHitbox(tile, outerTarget)) {
+        dropSlot = outerTarget;
+      }
       tile.style.transition = 'transform 0.2s';
       tile.style.transform = '';
       clearHover();
+      outerTarget = null;
       let wrongDrop = false;
       if (dropSlot && !dropSlot.classList.contains('filled')) {
         const letter = tile.textContent;
@@ -95,6 +120,7 @@ export function setupDragDrop(slots, tiles, onComplete) {
       if (tile.used) return;
       startX = e.clientX;
       startY = e.clientY;
+      outerTarget = null;
       tile.setPointerCapture(e.pointerId);
       tile.classList.add('active');
       tile.addEventListener('pointermove', move);
