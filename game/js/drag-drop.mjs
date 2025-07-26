@@ -53,6 +53,7 @@ export function setupDragDrop(slots, tiles, onComplete) {
       tile.style.transition = 'transform 0.2s';
       tile.style.transform = '';
       clearHover();
+      let wrongDrop = false;
       if (dropSlot && !dropSlot.classList.contains('filled')) {
         const letter = tile.textContent;
         if (letter === dropSlot.dataset.letter) {
@@ -67,15 +68,21 @@ export function setupDragDrop(slots, tiles, onComplete) {
             onComplete();
           }
         } else {
-          dropSlot.classList.add('wrong');
-          tile.classList.add('shake');
+          wrongDrop = true;
+          dropSlot.classList.add('wrong', 'flash-letter');
           playError();
-          dropSlot.addEventListener('animationend', () => dropSlot.classList.remove('wrong'), { once: true });
+          dropSlot.addEventListener('animationend', () => {
+            dropSlot.classList.remove('wrong');
+            dropSlot.classList.remove('flash-letter');
+          }, { once: true });
           tile.addEventListener('animationend', () => tile.classList.remove('shake'), { once: true });
         }
       }
       tile.addEventListener('transitionend', () => {
         tile.style.transition = '';
+        if (wrongDrop) {
+          tile.classList.add('shake');
+        }
       }, { once: true });
       tile.classList.remove('active');
     };
