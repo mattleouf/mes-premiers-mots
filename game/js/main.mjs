@@ -7,6 +7,50 @@ let bounceCount = 0;
 let bounceHandler;
 let currentTiles = [];
 
+function repositionTiles() {
+  const container = document.getElementById('tiles');
+  if (!container) return;
+  const { width, height } = container.getBoundingClientRect();
+  const sampleSlot = document.querySelector('.slot');
+  const slotRect = sampleSlot
+    ? sampleSlot.getBoundingClientRect()
+    : { width: 40, height: 50 };
+  const tileW = slotRect.width;
+  const tileH = slotRect.height;
+  const marginX = tileW;
+  const positions = [];
+  const maxAttempts = 200;
+  const minDist = Math.max(tileW, tileH) * 1.1;
+  const nonOverlappingPos = () => {
+    for (let tries = 0; tries < maxAttempts; tries++) {
+      const x = marginX + Math.random() * (width - 3 * tileW);
+      const y = Math.random() * (height - tileH);
+      let overlap = false;
+      for (const p of positions) {
+        const dx = p.x - x;
+        const dy = p.y - y;
+        if (Math.hypot(dx, dy) < minDist) {
+          overlap = true;
+          break;
+        }
+      }
+      if (!overlap) return { x, y };
+    }
+    return {
+      x: marginX + Math.random() * (width - 3 * tileW),
+      y: Math.random() * (height - tileH),
+    };
+  };
+
+  currentTiles.forEach((tile) => {
+    if (tile.used) return;
+    const pos = nonOverlappingPos();
+    positions.push(pos);
+    tile.style.left = `${pos.x}px`;
+    tile.style.top = `${pos.y}px`;
+  });
+}
+
 // Emoji history management
 let wordHistory = [];
 
@@ -328,6 +372,7 @@ window.addEventListener('DOMContentLoaded', () => {
   loadHistory();
   renderHistory();
   startGame();
+  repositionTiles();
 
   const settingsBtn = document.getElementById('settings-btn');
   const continueBtn = document.getElementById('continue-btn');
@@ -350,4 +395,5 @@ window.addEventListener('DOMContentLoaded', () => {
     sessionStorage.removeItem('wordHistory');
     window.location.href = '../';
   });
+  window.addEventListener('resize', repositionTiles);
 });

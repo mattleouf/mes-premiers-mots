@@ -12,6 +12,9 @@ body {
   text-align: center;
   padding-top: 2rem;
   overflow: hidden; /* prevent page scrolling during gameplay */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 #picture {
   /* enlarge the emoji display */
@@ -274,5 +277,24 @@ body {
 #menu-btn {
   background-color: #f44336;
   color: #fff;
+}
+
+@media (orientation: landscape) {
+  body {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    padding-top: 1rem;
+  }
+  #picture {
+    margin-right: 2rem;
+    margin-bottom: 0;
+  }
+  .word {
+    margin-bottom: 1rem;
+  }
+  .tiles {
+    height: 50vh;
+  }
 }
 
