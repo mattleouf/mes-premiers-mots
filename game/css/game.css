@@ -233,8 +233,20 @@ body {
   pointer-events: none;
 }
 
-.history-emoji {
+.history-emoji,
+.history-placeholder {
+  width: clamp(1.5rem, 3vw, 2.5rem);
+  height: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.history-placeholder {
+  border: 2px dashed #555;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 /* Settings button */
