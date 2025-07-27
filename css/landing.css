@@ -51,8 +51,24 @@ body {
   font-size: clamp(3rem, 8vw, 4.5rem);
 }
 
-.title .large {
-  font-size: clamp(4rem, 10vw, 6rem);
+.title-tiles {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.title-tile {
+  width: 60px;
+  height: 60px;
+  background: #fdfdfd;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #000;
 }
 
 @keyframes color-cycle {
