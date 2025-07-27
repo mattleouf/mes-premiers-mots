@@ -6,7 +6,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   const options = document.getElementById('options');
   const tiles = Array.from(document.querySelectorAll('.flying-tile'));
 
-  const size = 60; // match CSS
+  const size = 90; // match CSS
 
   const wordData = await fetch('game/data/words-fr.json').then((r) => r.json());
   const emojis = wordData.map((w) => w.emoji);
