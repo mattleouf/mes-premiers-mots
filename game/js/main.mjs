@@ -18,28 +18,26 @@ function repositionTiles() {
   const tileW = slotRect.width;
   const tileH = slotRect.height;
   const marginX = tileW;
+  const marginY = tileH;
   const positions = [];
-  const maxAttempts = 200;
-  const minDist = Math.max(tileW, tileH) * 1.1;
+  const maxAttempts = 300;
+
+  const randomPos = () => ({
+    x: marginX + Math.random() * Math.max(0, width - 2 * marginX - tileW),
+    y: marginY + Math.random() * Math.max(0, height - 2 * marginY - tileH),
+  });
+
+  const isOverlap = (x, y) =>
+    positions.some((p) =>
+      !(x + tileW <= p.x || p.x + tileW <= x || y + tileH <= p.y || p.y + tileH <= y)
+    );
+
   const nonOverlappingPos = () => {
     for (let tries = 0; tries < maxAttempts; tries++) {
-      const x = marginX + Math.random() * (width - 2 * tileW);
-      const y = Math.random() * (height - tileH);
-      let overlap = false;
-      for (const p of positions) {
-        const dx = p.x - x;
-        const dy = p.y - y;
-        if (Math.hypot(dx, dy) < minDist) {
-          overlap = true;
-          break;
-        }
-      }
-      if (!overlap) return { x, y };
+      const pos = randomPos();
+      if (!isOverlap(pos.x, pos.y)) return pos;
     }
-    return {
-      x: marginX + Math.random() * (width - 2 * tileW),
-      y: Math.random() * (height - tileH),
-    };
+    return randomPos();
   };
 
   currentTiles.forEach((tile) => {
@@ -175,29 +173,26 @@ function createTiles(word) {
   const tileH = slotRect.height;
   const spacing = tileW * 0.25;
   const marginX = tileW; // keep one tile empty on each side
+  const marginY = tileH;
+
+  const maxAttempts = 300;
+
+  const randomPos = () => ({
+    x: marginX + Math.random() * Math.max(0, width - 2 * marginX - tileW),
+    y: marginY + Math.random() * Math.max(0, height - 2 * marginY - tileH)
+  });
+
+  const isOverlap = (x, y) =>
+    positions.some((p) =>
+      !(x + tileW <= p.x || p.x + tileW <= x || y + tileH <= p.y || p.y + tileH <= y)
+    );
 
   const nonOverlappingPos = () => {
-    const maxAttempts = 200;
-    const minDist = Math.max(tileW, tileH) * 1.1;
     for (let tries = 0; tries < maxAttempts; tries++) {
-      const x = marginX + Math.random() * (width - 2 * tileW);
-      const y = Math.random() * (height - tileH);
-      let overlap = false;
-      for (const p of positions) {
-        const dx = p.x - x;
-        const dy = p.y - y;
-        if (Math.hypot(dx, dy) < minDist) {
-          overlap = true;
-          break;
-        }
-      }
-      if (!overlap) return { x, y };
+      const pos = randomPos();
+      if (!isOverlap(pos.x, pos.y)) return pos;
     }
-    // As a safety net, allow slight overlap after many failed attempts
-    return {
-      x: marginX + Math.random() * (width - 2 * tileW),
-      y: Math.random() * (height - tileH)
-    };
+    return randomPos();
   };
 
   for (const letter of letters) {
