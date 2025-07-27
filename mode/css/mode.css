@@ -1,0 +1,7 @@
+.modes {
+  margin-top: 10vh;
+}
+.mode-btn small {
+  display: block;
+  font-size: 0.75rem;
+}

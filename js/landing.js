@@ -119,7 +119,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   requestAnimationFrame(step);
 
   play.addEventListener('click', () => {
-    window.location.href = 'game/';
+    window.location.href = 'mode/';
   });
   options.addEventListener('click', () => {
     window.location.href = 'settings/';
