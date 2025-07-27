@@ -1,7 +1,15 @@
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.mode-btn').forEach((btn) => {
+    const count = parseInt(btn.dataset.count, 10);
+    const preview = btn.querySelector('.preview');
+    if (preview) {
+      for (let i = 0; i < count; i++) {
+        const span = document.createElement('span');
+        span.className = 'preview-slot';
+        preview.appendChild(span);
+      }
+    }
     btn.addEventListener('click', () => {
-      const count = parseInt(btn.dataset.count, 10);
       sessionStorage.setItem('wordLimit', String(count));
       window.location.href = '../game/';
     });

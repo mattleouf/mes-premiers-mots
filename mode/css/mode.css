@@ -5,3 +5,19 @@
   display: block;
   font-size: 0.75rem;
 }
+
+.mode-btn .preview {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2px;
+  margin-bottom: 0.25rem;
+}
+
+.preview-slot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border: 2px dashed #fff;
+  border-radius: 2px;
+  box-sizing: border-box;
+}

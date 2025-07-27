@@ -69,13 +69,17 @@ function renderHistory() {
   const container = document.getElementById('history');
   if (!container) return;
   container.innerHTML = '';
-  const recent = wordHistory.slice(-30).reverse();
-  recent.forEach((emoji) => {
+  for (let i = 0; i < sessionLimit; i++) {
     const span = document.createElement('span');
-    span.className = 'history-emoji';
-    span.textContent = emoji;
+    if (i < wordHistory.length) {
+      span.className = 'history-emoji';
+      span.textContent = wordHistory[i];
+    } else {
+      span.className = 'history-placeholder';
+      span.textContent = '';
+    }
     container.appendChild(span);
-  });
+  }
 }
 
 function addToHistory(emoji) {
