@@ -18,7 +18,9 @@ function repositionTiles() {
   const tileW = slotRect.width;
   const tileH = slotRect.height;
   const marginX = tileW;
-  const marginY = tileH;
+  // use a smaller vertical margin so random placement always has
+  // some wiggle room even on short screens
+  const marginY = Math.min(tileH * 0.5, height * 0.1);
   const positions = [];
   const maxAttempts = 300;
 
@@ -173,7 +175,8 @@ function createTiles(word) {
   const tileH = slotRect.height;
   const spacing = tileW * 0.25;
   const marginX = tileW; // keep one tile empty on each side
-  const marginY = tileH;
+  // vertical margin kept small so available height isn't consumed
+  const marginY = Math.min(tileH * 0.5, height * 0.1);
 
   const maxAttempts = 300;
 
