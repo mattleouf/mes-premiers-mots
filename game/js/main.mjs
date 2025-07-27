@@ -23,7 +23,7 @@ function repositionTiles() {
   const minDist = Math.max(tileW, tileH) * 1.1;
   const nonOverlappingPos = () => {
     for (let tries = 0; tries < maxAttempts; tries++) {
-      const x = marginX + Math.random() * (width - 3 * tileW);
+      const x = marginX + Math.random() * (width - 2 * tileW);
       const y = Math.random() * (height - tileH);
       let overlap = false;
       for (const p of positions) {
@@ -37,7 +37,7 @@ function repositionTiles() {
       if (!overlap) return { x, y };
     }
     return {
-      x: marginX + Math.random() * (width - 3 * tileW),
+      x: marginX + Math.random() * (width - 2 * tileW),
       y: Math.random() * (height - tileH),
     };
   };
@@ -180,7 +180,7 @@ function createTiles(word) {
     const maxAttempts = 200;
     const minDist = Math.max(tileW, tileH) * 1.1;
     for (let tries = 0; tries < maxAttempts; tries++) {
-      const x = marginX + Math.random() * (width - 3 * tileW);
+      const x = marginX + Math.random() * (width - 2 * tileW);
       const y = Math.random() * (height - tileH);
       let overlap = false;
       for (const p of positions) {
@@ -195,7 +195,7 @@ function createTiles(word) {
     }
     // As a safety net, allow slight overlap after many failed attempts
     return {
-      x: marginX + Math.random() * (width - 3 * tileW),
+      x: marginX + Math.random() * (width - 2 * tileW),
       y: Math.random() * (height - tileH)
     };
   };
