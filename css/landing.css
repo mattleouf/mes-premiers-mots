@@ -8,18 +8,18 @@ body {
   justify-content: flex-start;
   position: relative;
   overflow: hidden;
-  padding-top: 30vh;
+  padding-top: 10vh;
 }
 
 @media (orientation: portrait) {
   body {
-    padding-top: 30vh;
+    padding-top: 10vh;
   }
 }
 
 @media (orientation: landscape) {
   body {
-    padding-top: 20vh;
+    padding-top: 5vh;
   }
 }
 
@@ -35,7 +35,7 @@ body {
 /* animated heading */
 .title {
   margin-bottom: 1.5rem;
-  animation: color-cycle 8s linear infinite;
+  animation: color-cycle 24s linear infinite;
 }
 
 .title span {
@@ -56,10 +56,10 @@ body {
 }
 
 @keyframes color-cycle {
-  0% { color: #d2042d; }
-  33% { color: #ff6600; }
-  66% { color: #ffd700; }
-  100% { color: #d2042d; }
+  0% { color: #ff9999; }
+  33% { color: #ffb366; }
+  66% { color: #fff2a8; }
+  100% { color: #ff9999; }
 }
 
 
