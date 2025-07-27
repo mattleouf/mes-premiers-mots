@@ -6,6 +6,8 @@ let confettiInterval;
 let bounceCount = 0;
 let bounceHandler;
 let currentTiles = [];
+let sessionLimit = parseInt(sessionStorage.getItem('wordLimit') || '30', 10);
+let wordsPlayed = 0;
 
 function repositionTiles() {
   const container = document.getElementById('tiles');
@@ -296,6 +298,20 @@ function dropUnusedTiles() {
   });
 }
 
+function endGame() {
+  const nextBtn = document.getElementById('next');
+  const msg = document.getElementById('message');
+  msg.textContent = 'Fin de la partie !';
+  msg.classList.add('show');
+  nextBtn.textContent = 'Menu principal \u21A9\uFE0F';
+  nextBtn.style.display = 'inline-block';
+  nextBtn.onclick = () => {
+    sessionStorage.removeItem('wordLimit');
+    sessionStorage.removeItem('wordHistory');
+    window.location.href = '../';
+  };
+}
+
 async function animateWordReveal(slots) {
   const duration = 300;
   const delay = 200;
@@ -348,7 +364,15 @@ function showWord(wordObj) {
       });
     }
   });
-  nextBtn.onclick = () => startGame();
+  nextBtn.textContent = 'Mot suivant \u27A1\uFE0F';
+  nextBtn.onclick = () => {
+    wordsPlayed++;
+    if (wordsPlayed >= sessionLimit) {
+      endGame();
+    } else {
+      startGame();
+    }
+  };
 }
 
 async function startGame() {
@@ -368,6 +392,8 @@ function closeSettings() {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
+  wordsPlayed = 0;
+  sessionLimit = parseInt(sessionStorage.getItem('wordLimit') || '30', 10);
   loadHistory();
   renderHistory();
   startGame();
