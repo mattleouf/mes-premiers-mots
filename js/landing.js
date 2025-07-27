@@ -1,15 +1,17 @@
 // Landing page interactions
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
   // Reset word history when returning to the start screen
   sessionStorage.removeItem('wordHistory');
   const play = document.getElementById('play');
   const options = document.getElementById('options');
   const tiles = Array.from(document.querySelectorAll('.flying-tile'));
 
-  const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const size = 60; // match CSS
 
-  const randomLetter = () => letters[Math.floor(Math.random() * letters.length)];
+  const wordData = await fetch('game/data/words-fr.json').then((r) => r.json());
+  const emojis = wordData.map((w) => w.emoji);
+
+  const randomEmoji = () => emojis[Math.floor(Math.random() * emojis.length)];
   // Slightly faster movement than before
   const randomVelocity = () =>
     (Math.random() * 0.4 + 0.2) * 1.2 * (Math.random() < 0.5 ? -1 : 1);
@@ -32,9 +34,13 @@ window.addEventListener('DOMContentLoaded', () => {
     return { x: Math.random() * (window.innerWidth - size), y: Math.random() * (window.innerHeight - size) };
   };
 
-  tiles.forEach((tile) => {
+  const uniqueEmojis = [...emojis]
+    .sort(() => Math.random() - 0.5)
+    .slice(0, tiles.length);
+
+  tiles.forEach((tile, idx) => {
     const pos = nonOverlappingPosition();
-    tile.textContent = randomLetter();
+    tile.textContent = uniqueEmojis[idx];
     tile.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
     states.push({
       x: pos.x,
@@ -56,12 +62,12 @@ window.addEventListener('DOMContentLoaded', () => {
       if (s.x <= 0 || s.x >= maxX) {
         s.vx *= -1;
         s.x = Math.max(0, Math.min(s.x, maxX));
-        tiles[idx].textContent = randomLetter();
+        tiles[idx].textContent = randomEmoji();
       }
       if (s.y <= 0 || s.y >= maxY) {
         s.vy *= -1;
         s.y = Math.max(0, Math.min(s.y, maxY));
-        tiles[idx].textContent = randomLetter();
+        tiles[idx].textContent = randomEmoji();
       }
     });
 
