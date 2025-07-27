@@ -334,6 +334,7 @@ function showWord(wordObj) {
   const slots = createSlots(wordObj.word);
   const tiles = createTiles(wordObj.word);
   currentTiles = tiles;
+  document.fonts.ready.then(repositionTiles);
   const nextBtn = document.getElementById('next');
   nextBtn.style.display = 'none';
   document.getElementById('message').classList.remove('show');
@@ -373,6 +374,7 @@ window.addEventListener('DOMContentLoaded', () => {
   renderHistory();
   startGame();
   repositionTiles();
+  document.fonts.ready.then(repositionTiles);
 
   const settingsBtn = document.getElementById('settings-btn');
   const continueBtn = document.getElementById('continue-btn');

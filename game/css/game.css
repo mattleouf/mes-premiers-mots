@@ -4,7 +4,7 @@
   --tile-height: clamp(50px, 12vw, 100px);
   --tile-font: clamp(2rem, 5vw, 3rem);
   --picture-size: clamp(6.5rem, 20vw, 12rem);
-  --btn-font: clamp(1rem, 3vw, 1.5rem);
+  --btn-font: clamp(1.2rem, 3vw, 1.6rem);
   --next-font: clamp(2rem, 5vw, 3rem);
 }
 
@@ -93,6 +93,7 @@ body {
 }
 
 .btn {
+  font-family: "Titan One", sans-serif;
   font-size: var(--btn-font);
   padding: 0.75rem 1.5rem;
   border: none;
@@ -236,6 +237,7 @@ body {
   right: 0.25rem;
   background: none;
   border: none;
+  font-family: "Titan One", sans-serif;
   font-size: clamp(1.6rem, 4vw, 3rem);
   cursor: pointer;
   z-index: 3;
