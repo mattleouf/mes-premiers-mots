@@ -49,6 +49,7 @@ body {
   position: relative;
   height: 35vh;
   max-height: clamp(300px, 40vh, 500px);
+  width: 100%;
 }
 .tile {
   width: var(--tile-width);
@@ -297,6 +298,7 @@ body {
   }
   .tiles {
     height: 50vh;
+    width: 100%;
   }
 }
 
