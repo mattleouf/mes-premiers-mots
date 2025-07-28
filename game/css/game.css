@@ -41,12 +41,7 @@ body {
   color: #000;
 }
 .slot.preview {
-  opacity: 0.5;
-  border: 1px solid #bbb;
-  width: calc(var(--tile-width) * 0.85);
-  height: calc(var(--tile-height) * 0.85);
-  font-size: calc(var(--tile-font) * 0.85);
-  border-radius: 4px;
+  opacity: 0.3;
 }
 .slot.filled {
   border-style: solid;
@@ -240,16 +235,17 @@ body {
 
 .history-emoji,
 .history-placeholder {
-  width: clamp(1.5rem, 3vw, 2.5rem);
-  height: clamp(1.5rem, 3vw, 2.5rem);
+  width: clamp(1.3rem, 2.5vw, 2.1rem);
+  height: clamp(1.3rem, 2.5vw, 2.1rem);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-size: clamp(1.3rem, 2.5vw, 2.1rem);
 }
 
 .history-placeholder {
-  border: 2px dashed #555;
+  opacity: 0.5;
+  border: 1px solid #bbb;
   border-radius: 4px;
   box-sizing: border-box;
 }
