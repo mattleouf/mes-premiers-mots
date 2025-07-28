@@ -110,6 +110,42 @@ body {
   opacity: 0.9;
 }
 
+.loading-overlay {
+  position: fixed;
+  inset: 0;
+  background: #f7f7f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 5;
+}
+
+.loading-overlay.hidden {
+  display: none;
+}
+
+.loading-bar {
+  width: 60%;
+  height: 10px;
+  background: #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 1rem auto 0;
+}
+
+.loading-progress {
+  height: 100%;
+  width: 0;
+  background: #4caf50;
+  transition: width 0.2s ease;
+}
+
+.loading-text {
+  margin-top: 0.5rem;
+  font-family: "Nunito", sans-serif;
+}
+
 .flying-tile {
   position: fixed;
   top: 0;
