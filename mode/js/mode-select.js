@@ -1,16 +1,12 @@
 window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.mode-btn').forEach((btn) => {
-    const count = parseInt(btn.dataset.count, 10);
+    const countAttr = btn.dataset.count;
     const preview = btn.querySelector('.preview');
     if (preview) {
-      for (let i = 0; i < count; i++) {
-        const span = document.createElement('span');
-        span.className = 'preview-slot';
-        preview.appendChild(span);
-      }
+      preview.textContent = btn.dataset.emoji || '';
     }
     btn.addEventListener('click', () => {
-      sessionStorage.setItem('wordLimit', String(count));
+      sessionStorage.setItem('wordLimit', countAttr);
       window.location.href = '../game/';
     });
   });
