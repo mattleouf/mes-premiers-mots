@@ -309,17 +309,10 @@ function dropUnusedTiles() {
 }
 
 function endGame() {
-  const nextBtn = document.getElementById('next');
-  const msg = document.getElementById('message');
-  msg.textContent = 'Fin de la partie !';
-  msg.classList.add('show');
-  nextBtn.textContent = 'Menu principal \u21A9\uFE0F';
-  nextBtn.style.display = 'inline-block';
-  nextBtn.onclick = () => {
-    sessionStorage.removeItem('wordLimit');
-    sessionStorage.removeItem('wordHistory');
-    window.location.href = '../';
-  };
+  // give the player a brief moment to enjoy the final word animation
+  setTimeout(() => {
+    window.location.href = '../celebration/';
+  }, 800);
 }
 
 async function animateWordReveal(slots) {
