@@ -1,8 +1,9 @@
 import { setupDragDrop } from './drag-drop.mjs';
 import { allSlotsFilled } from './word-check.mjs';
 import { playSuccess } from './audio.mjs';
+import { startConfetti as createConfettiEffect } from '../../js/confetti.js';
 
-let confettiInterval;
+let stopConfettiEffect;
 let bounceCount = 0;
 let bounceHandler;
 let currentTiles = [];
@@ -225,26 +226,14 @@ function createTiles(word) {
 }
 
 function startConfetti() {
-  const container = document.getElementById('confetti');
-  confettiInterval = setInterval(() => {
-    const span = document.createElement('span');
-    span.className = 'confetti';
-    span.textContent = Math.random() < 0.5 ? '🔶' : '🔷';
-    span.style.setProperty('--x', Math.random() * 100 + '%');
-    span.style.setProperty('--sway', (Math.random() * 60 - 30) + 'px');
-    span.style.setProperty('--duration', 4 + Math.random() * 2 + 's');
-    span.style.setProperty('--rotate', (Math.random() < 0.5 ? '-' : '') + '720deg');
-    container.appendChild(span);
-    span.addEventListener('animationend', () => span.remove());
-  }, 300);
+  stopConfettiEffect = createConfettiEffect();
 }
 
 function stopConfetti() {
-  if (confettiInterval) {
-    clearInterval(confettiInterval);
-    confettiInterval = null;
+  if (stopConfettiEffect) {
+    stopConfettiEffect();
+    stopConfettiEffect = null;
   }
-  document.getElementById('confetti').innerHTML = '';
 }
 
 function startPictureAnimation() {
