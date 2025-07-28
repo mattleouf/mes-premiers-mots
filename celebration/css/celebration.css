@@ -2,26 +2,61 @@ body {
   text-align: center;
   padding-top: 3rem;
   background: #f7f7f5;
+  overflow: hidden;
+}
+
+.title {
+  font-size: clamp(3rem, 10vw, 5rem);
+  margin-bottom: 1rem;
+  animation: rainbow 5s linear infinite;
+}
+
+@keyframes rainbow {
+  0% { color: #ff6b6b; }
+  25% { color: #fcbf49; }
+  50% { color: #4caf50; }
+  75% { color: #2196f3; }
+  100% { color: #ff6b6b; }
 }
 
 .emojis {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
+  position: relative;
+  width: 80vmin;
+  height: 80vmin;
   margin: 2rem auto;
-  max-width: 90vw;
+  animation: rotateCircle 20s linear infinite;
+}
+
+@keyframes rotateCircle {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.emoji-wrapper {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: rotate(var(--angle)) translate(var(--radius)) rotate(calc(-1 * var(--angle)));
+}
+
+.emoji-wrapper.spin {
+  animation: wrapperSpin 0.6s ease-in-out;
+}
+
+@keyframes wrapperSpin {
+  from { transform: rotate(var(--angle)) translate(var(--radius)) rotate(calc(-1 * var(--angle))) rotate(0deg); }
+  to { transform: rotate(var(--angle)) translate(var(--radius)) rotate(calc(-1 * var(--angle))) rotate(360deg); }
 }
 
 .emoji {
-  font-size: clamp(2.5rem, 8vw, 4rem);
-  display: inline-block;
-  animation: dance 0.8s ease-in-out infinite alternate;
+  display: block;
+  transform-origin: center;
+  animation: pulse 2s ease-in-out infinite;
 }
 
-@keyframes dance {
-  from { transform: translateY(0) rotate(-10deg); }
-  to { transform: translateY(-20%) rotate(10deg); }
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.3); }
 }
 
 .btn {
