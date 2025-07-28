@@ -41,7 +41,12 @@ body {
   color: #000;
 }
 .slot.preview {
-  opacity: 0.3;
+  opacity: 0.5;
+  border: 1px solid #bbb;
+  width: calc(var(--tile-width) * 0.85);
+  height: calc(var(--tile-height) * 0.85);
+  font-size: calc(var(--tile-font) * 0.85);
+  border-radius: 4px;
 }
 .slot.filled {
   border-style: solid;

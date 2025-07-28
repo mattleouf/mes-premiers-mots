@@ -11,13 +11,13 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 2px;
-  margin-bottom: 0.25rem;
+  margin-top: 0.25rem;
 }
 
 .preview-slot {
-  width: 0.8rem;
-  height: 0.8rem;
-  border: 2px dashed #fff;
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 2px;
   box-sizing: border-box;
 }
