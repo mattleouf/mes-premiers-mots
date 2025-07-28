@@ -7,10 +7,10 @@ const COLORS = [
   [174, 61, 99],
   [219, 56, 83],
   [244, 92, 68],
-  [248, 182, 70]
+  [248, 182, 70],
 ];
 const PI2 = Math.PI * 2;
-const NUM_CONFETTI = 150;
+const NUM_CONFETTI = 200;
 
 export function startConfetti(container = document.body) {
   const canvas = document.createElement('canvas');
@@ -42,36 +42,47 @@ export function startConfetti(container = document.body) {
     constructor() {
       this.style = COLORS[(Math.random() * COLORS.length) | 0];
       this.rgb = `rgba(${this.style[0]},${this.style[1]},${this.style[2]}`;
-      this.r = (Math.random() * 4 + 2) | 0;
-      this.r2 = this.r * 2;
+      this.size = Math.random() * 6 + 4;
       this.replace();
     }
     replace() {
       this.opacity = 0;
       this.dop = 0.03 * (Math.random() * 3 + 1);
-      this.x = Math.random() * (w - this.r2);
-      this.y = Math.random() * (h - this.r2) - 20;
-      this.xmax = w - this.r;
-      this.ymax = h - this.r;
-      this.vx = Math.random() * 2 + 8 * xpos - 5;
-      this.vy = 0.7 * this.r + Math.random() * 2 - 1;
+      this.x = Math.random() * w;
+      this.y = Math.random() * h - 20;
+      this.xmax = w;
+      this.ymax = h;
+      this.vx = Math.random() * 6 - 3;
+      this.vy = Math.random() * 3 + 2;
+      this.rotation = Math.random() * PI2;
+      this.rotationSpeed = (Math.random() - 0.5) * 0.2;
+      this.shape = Math.random() < 0.5 ? 'rect' : 'circle';
     }
     draw() {
       this.x += this.vx;
-      this.y += this.vy;
+      this.y += this.vy; // falling downwards
+      this.rotation += this.rotationSpeed;
       this.opacity += this.dop;
       if (this.opacity > 1) {
         this.opacity = 1;
         this.dop *= -1;
       }
       if (this.opacity < 0 || this.y > this.ymax) this.replace();
-      if (!(0 < this.x && this.x < this.xmax)) {
+      if (this.x > this.xmax || this.x < 0) {
         this.x = (this.x + this.xmax) % this.xmax;
       }
-      context.beginPath();
-      context.arc(this.x | 0, this.y | 0, this.r, 0, PI2, false);
+      context.save();
+      context.translate(this.x, this.y);
+      context.rotate(this.rotation);
       context.fillStyle = `${this.rgb},${this.opacity})`;
-      context.fill();
+      if (this.shape === 'rect') {
+        context.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 0.4);
+      } else {
+        context.beginPath();
+        context.arc(0, 0, this.size / 2, 0, PI2);
+        context.fill();
+      }
+      context.restore();
     }
   }
 
