@@ -1,0 +1,36 @@
+body {
+  text-align: center;
+  padding-top: 3rem;
+  background: #f7f7f5;
+}
+
+.emojis {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem auto;
+  max-width: 90vw;
+}
+
+.emoji {
+  font-size: clamp(2.5rem, 8vw, 4rem);
+  display: inline-block;
+  animation: dance 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes dance {
+  from { transform: translateY(0) rotate(-10deg); }
+  to { transform: translateY(-20%) rotate(10deg); }
+}
+
+.btn {
+  font-family: "Nunito", sans-serif;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #4caf50;
+  color: #fff;
+}
