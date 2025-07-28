@@ -9,6 +9,7 @@ body {
   position: relative;
   overflow: hidden;
   padding-top: 10vh;
+  user-select: none;
 }
 
 @media (orientation: portrait) {
@@ -69,6 +70,7 @@ body {
   justify-content: center;
   font-size: 2rem;
   color: #000;
+  user-select: none;
 }
 
 @keyframes color-cycle {
@@ -160,6 +162,9 @@ body {
   color: #000;
   z-index: 0;
   pointer-events: none;
+  overflow: hidden;
+  line-height: 1;
+  user-select: none;
 }
 
 /* discreet version label */

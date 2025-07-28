@@ -370,18 +370,18 @@ function showWord(wordObj) {
       animateWordReveal(slots).then(() => {
         addToHistory(wordObj.emoji);
         celebrate();
-        nextBtn.style.display = 'inline-block';
+        wordsPlayed++;
+        if (sessionLimit !== Infinity && wordsPlayed >= sessionLimit) {
+          endGame();
+        } else {
+          nextBtn.style.display = 'inline-block';
+        }
       });
     }
   });
   nextBtn.textContent = 'Mot suivant \u27A1\uFE0F';
   nextBtn.onclick = () => {
-    wordsPlayed++;
-    if (sessionLimit !== Infinity && wordsPlayed >= sessionLimit) {
-      endGame();
-    } else {
-      startGame();
-    }
+    startGame();
   };
 }
 
