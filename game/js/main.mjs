@@ -6,7 +6,12 @@ let confettiInterval;
 let bounceCount = 0;
 let bounceHandler;
 let currentTiles = [];
-let sessionLimit = parseInt(sessionStorage.getItem('wordLimit') || '30', 10);
+function parseLimit(value) {
+  if (!value) return 30;
+  return value === 'inf' ? Infinity : parseInt(value, 10);
+}
+
+let sessionLimit = parseLimit(sessionStorage.getItem('wordLimit'));
 let wordsPlayed = 0;
 
 function repositionTiles() {
@@ -69,7 +74,8 @@ function renderHistory() {
   const container = document.getElementById('history');
   if (!container) return;
   container.innerHTML = '';
-  for (let i = 0; i < sessionLimit; i++) {
+  const limit = sessionLimit === Infinity ? wordHistory.length : sessionLimit;
+  for (let i = 0; i < limit; i++) {
     const span = document.createElement('span');
     if (i < wordHistory.length) {
       span.className = 'history-emoji';
@@ -371,7 +377,7 @@ function showWord(wordObj) {
   nextBtn.textContent = 'Mot suivant \u27A1\uFE0F';
   nextBtn.onclick = () => {
     wordsPlayed++;
-    if (wordsPlayed >= sessionLimit) {
+    if (sessionLimit !== Infinity && wordsPlayed >= sessionLimit) {
       endGame();
     } else {
       startGame();
@@ -397,7 +403,7 @@ function closeSettings() {
 
 window.addEventListener('DOMContentLoaded', () => {
   wordsPlayed = 0;
-  sessionLimit = parseInt(sessionStorage.getItem('wordLimit') || '30', 10);
+  sessionLimit = parseLimit(sessionStorage.getItem('wordLimit'));
   loadHistory();
   renderHistory();
   startGame();
