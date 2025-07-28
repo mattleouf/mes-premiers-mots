@@ -1,4 +1,5 @@
-import { startConfetti } from '../js/confetti.js';
+// Use the shared confetti script from the project root.
+import { startConfetti } from '../../js/confetti.js';
 
 window.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('emoji-container');
