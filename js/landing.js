@@ -4,6 +4,9 @@ window.addEventListener('DOMContentLoaded', async () => {
   sessionStorage.removeItem('wordHistory');
   const play = document.getElementById('play');
   const options = document.getElementById('options');
+  const overlay = document.getElementById('loading-overlay');
+  const progressBar = document.getElementById('loading-progress');
+  const progressText = document.getElementById('loading-text');
   const tiles = Array.from(document.querySelectorAll('.flying-tile'));
 
   const size = 90; // match CSS
@@ -17,6 +20,38 @@ window.addEventListener('DOMContentLoaded', async () => {
     (Math.random() * 0.4 + 0.2) * 1.2 * (Math.random() < 0.5 ? -1 : 1);
 
   const states = [];
+
+  const resources = [
+    'mode/index.html',
+    'mode/css/mode.css',
+    'mode/js/mode-select.js',
+    'game/index.html',
+    'game/css/game.css',
+    'game/js/main.mjs',
+    'game/js/drag-drop.mjs',
+    'game/js/word-check.mjs',
+    'game/js/audio.mjs',
+    'game/data/words-fr.json',
+    'settings/index.html',
+    'settings/css/settings.css'
+  ];
+
+  async function prefetchResources() {
+    overlay.classList.remove('hidden');
+    let loaded = 0;
+    for (const url of resources) {
+      try {
+        await fetch(url);
+      } catch (e) {
+        // ignore failures (offline or 404)
+      }
+      loaded++;
+      const pct = Math.round((loaded / resources.length) * 100);
+      progressBar.style.width = pct + '%';
+      progressText.textContent = pct + '%';
+    }
+    overlay.classList.add('hidden');
+  }
 
   const nonOverlappingPosition = () => {
     for (let attempt = 0; attempt < 50; attempt++) {
@@ -117,6 +152,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   };
 
   requestAnimationFrame(step);
+  prefetchResources();
 
   play.addEventListener('click', () => {
     window.location.href = 'mode/';
