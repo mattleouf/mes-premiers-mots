@@ -36,7 +36,8 @@ window.addEventListener('DOMContentLoaded', async () => {
     'settings/css/settings.css',
     'celebration/index.html',
     'celebration/css/celebration.css',
-    'celebration/js/celebration.js'
+    'celebration/js/celebration.js',
+    'js/confetti.js'
   ];
 
   async function prefetchResources() {
