@@ -304,7 +304,7 @@ function endGame() {
     setTimeout(() => {
       window.location.href = '../celebration/';
     }, 500);
-  }, 800);
+  }, 1800);
 }
 
 async function animateWordReveal(slots) {

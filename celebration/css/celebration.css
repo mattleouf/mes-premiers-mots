@@ -33,8 +33,20 @@ body {
   position: relative;
   width: 80vmin;
   height: 80vmin;
+  margin: 0 auto;
+  animation: rotateCircle 10s linear infinite;
+}
+
+#wheel {
+  width: 80vmin;
+  height: 80vmin;
   margin: 2rem auto;
-  animation: rotateCircle 20s linear infinite;
+  animation: wheelPulse 4s ease-in-out infinite;
+}
+
+@keyframes wheelPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(0.85); }
 }
 
 @keyframes rotateCircle {
@@ -61,7 +73,6 @@ body {
 .emoji {
   display: block;
   transform-origin: center;
-  animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
@@ -78,6 +89,18 @@ body {
   cursor: pointer;
   background-color: #4caf50;
   color: #fff;
+}
+
+#menu {
+  margin-top: 2rem;
+  opacity: 0;
+  animation: menuFadeIn 0.6s ease-out forwards;
+  animation-delay: 2s;
+}
+
+@keyframes menuFadeIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 @keyframes fade-in {
