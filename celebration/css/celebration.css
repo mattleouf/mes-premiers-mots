@@ -18,7 +18,12 @@ body {
 .title {
   font-size: clamp(3rem, 10vw, 5rem);
   margin-bottom: 1rem;
-  animation: rainbow 5s linear infinite;
+}
+
+.title span {
+  display: inline-block;
+  animation: rainbow 3s linear infinite;
+  animation-delay: calc(var(--i) * 0.2s);
 }
 
 @keyframes rainbow {
