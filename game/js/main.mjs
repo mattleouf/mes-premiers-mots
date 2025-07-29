@@ -300,7 +300,10 @@ function dropUnusedTiles() {
 function endGame() {
   // give the player a brief moment to enjoy the final word animation
   setTimeout(() => {
-    window.location.href = '../celebration/';
+    document.body.classList.add('fade-out');
+    setTimeout(() => {
+      window.location.href = '../celebration/';
+    }, 500);
   }, 800);
 }
 

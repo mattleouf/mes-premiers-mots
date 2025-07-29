@@ -1,9 +1,10 @@
 body {
   text-align: center;
   padding-top: 3rem;
-  background: linear-gradient(-45deg, #ff6b6b, #fcbf49, #4caf50, #2196f3);
+  background: linear-gradient(-45deg, #fff8e1, #ffccbc, #ff8a65, #f48fb1);
   background-size: 400% 400%;
-  animation: gradient-bg 12s ease infinite;
+  animation: fade-in 0.6s ease-out forwards, gradient-bg 12s ease infinite;
+  opacity: 0;
   overflow: hidden;
   height: 100vh;
 }
@@ -77,4 +78,9 @@ body {
   cursor: pointer;
   background-color: #4caf50;
   color: #fff;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
