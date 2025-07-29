@@ -1,8 +1,17 @@
 body {
   text-align: center;
   padding-top: 3rem;
-  background: #f7f7f5;
+  background: linear-gradient(-45deg, #ff6b6b, #fcbf49, #4caf50, #2196f3);
+  background-size: 400% 400%;
+  animation: gradient-bg 12s ease infinite;
   overflow: hidden;
+  height: 100vh;
+}
+
+@keyframes gradient-bg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .title {
