@@ -1,5 +1,5 @@
 .modes {
-  margin-top: 5vh;
+  margin-top: 4vh;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
   gap: 1rem;
@@ -48,4 +48,23 @@
   font-size: 3rem;
   user-select: none;
   line-height: 1;
+}
+
+body {
+  height: auto;
+  min-height: 100dvh;
+  overflow-y: auto;
+  padding-top: 2vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.back-btn {
+  margin-top: auto;
+  align-self: center;
+  margin-bottom: 2rem;
 }
