@@ -11,7 +11,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   const wrappers = [];
   const radius = 35; // circle radius in vmin
-  const fontSize = Math.min(6, 40 / Math.max(emojis.length, 1));
+  const fontSize = Math.min(8, 60 / Math.max(emojis.length, 1));
 
   emojis.forEach((e, idx) => {
     const wrapper = document.createElement('span');
@@ -23,7 +23,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const span = document.createElement('span');
     span.className = 'emoji';
     span.textContent = e;
-    span.style.fontSize = `clamp(2rem, ${fontSize}vmin, 6rem)`;
+    span.style.fontSize = `clamp(3rem, ${fontSize}vmin, 8rem)`;
 
     wrapper.appendChild(span);
     container.appendChild(wrapper);
@@ -31,15 +31,13 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   const spinDuration = 600;
-  const delay = 150;
+  const overlap = 0.75; // start next spin when current is 75% done
   function wave(i = 0) {
     if (!wrappers.length) return;
     const el = wrappers[i];
     el.classList.add('spin');
-    setTimeout(() => {
-      el.classList.remove('spin');
-      setTimeout(() => wave((i + 1) % wrappers.length), delay);
-    }, spinDuration);
+    setTimeout(() => el.classList.remove('spin'), spinDuration);
+    setTimeout(() => wave((i + 1) % wrappers.length), spinDuration * overlap);
   }
 
   wave();
