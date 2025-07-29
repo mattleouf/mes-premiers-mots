@@ -10,6 +10,7 @@ export function setupDragDrop(slots, tiles, onComplete) {
   const intersectingSlot = (tile) => {
     const t = tile.getBoundingClientRect();
     return slots.find((slot) => {
+      if (slot.classList.contains('filled')) return false;
       const r = slot.getBoundingClientRect();
       const expandedTop = r.top - r.height * 0.25;
       const expandedBottom = r.bottom + r.height * 0.25;
