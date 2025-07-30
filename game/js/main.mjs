@@ -366,7 +366,13 @@ function showWord(wordObj) {
   });
   nextBtn.textContent = 'Mot suivant \u27A1\uFE0F';
   nextBtn.onclick = () => {
-    startGame();
+    document.body.classList.add('word-fade-out');
+    setTimeout(() => {
+      document.body.classList.remove('word-fade-out');
+      startGame();
+      document.body.classList.add('word-fade-in');
+      setTimeout(() => document.body.classList.remove('word-fade-in'), 200);
+    }, 200);
   };
 }
 
