@@ -156,7 +156,13 @@ window.addEventListener('DOMContentLoaded', async () => {
   };
 
   requestAnimationFrame(step);
-  prefetchResources();
+
+  if (!localStorage.getItem('prefetched')) {
+    await prefetchResources();
+    localStorage.setItem('prefetched', '1');
+  } else {
+    overlay.classList.add('hidden');
+  }
 
   play.addEventListener('click', () => {
     window.location.href = 'mode/';

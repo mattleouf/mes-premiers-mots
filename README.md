@@ -120,7 +120,7 @@ More words	Easily added via JSON, no code changes.
 Theme modes	Color variables in CSS for quick swaps.
 Difficulty settings	Hide letter hints, increase distractors.
 Language packs	Structure supports adding English/Spanish words easily.
-Offline-ready	Game works offline by design; full offline PWA can be added later if needed.
+Offline-ready   A service worker caches assets after the first visit so the game works offline.
 
 
 ⸻
