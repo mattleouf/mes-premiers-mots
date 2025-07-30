@@ -330,7 +330,25 @@ body.fade-out {
   animation: screen-out 0.5s ease forwards;
 }
 
+body.word-fade-out {
+  animation: word-out 0.2s ease forwards;
+}
+
+body.word-fade-in {
+  animation: word-in 0.2s ease;
+}
+
 @keyframes screen-out {
   from { opacity: 1; }
   to { opacity: 0; }
+}
+
+@keyframes word-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes word-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
