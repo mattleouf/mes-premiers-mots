@@ -78,18 +78,18 @@ body {
   transform: rotate(var(--angle)) translate(var(--radius)) rotate(calc(-1 * var(--angle)));
 }
 
-.emoji-wrapper.spin {
-  animation: wrapperSpin 0.6s ease-in-out;
-}
-
-@keyframes wrapperSpin {
-  from { transform: rotate(var(--angle)) translate(var(--radius)) rotate(calc(-1 * var(--angle))) rotate(0deg); }
-  to { transform: rotate(var(--angle)) translate(var(--radius)) rotate(calc(-1 * var(--angle))) rotate(360deg); }
-}
-
 .emoji {
   display: block;
   transform-origin: center;
+}
+
+.emoji.spin {
+  animation: emojiSpin 0.6s ease-in-out;
+}
+
+@keyframes emojiSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes pulse {

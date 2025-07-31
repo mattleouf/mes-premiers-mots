@@ -28,11 +28,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
     wrapper.appendChild(span);
     container.appendChild(wrapper);
-    wrappers.push(wrapper);
+    wrappers.push(span);
   });
 
   const spinDuration = 600;
-  const overlap = 0.66; // start next spin when current is 66% done
+  const overlap = 0.5; // start next spin when current is 50% done
   function wave(i = 0) {
     if (!wrappers.length) return;
     const el = wrappers[i];
