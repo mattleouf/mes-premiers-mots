@@ -89,28 +89,6 @@ body {
   margin-top: 20vh;
 }
 
-.btn {
-  font-family: "Nunito", sans-serif;
-  font-size: 1.25rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.play {
-  background-color: #4caf50;
-  color: #fff;
-}
-
-.options {
-  background-color: #2196f3;
-  color: #fff;
-}
-
-.btn:hover {
-  opacity: 0.9;
-}
 
 .loading-overlay {
   position: fixed;
@@ -168,14 +146,3 @@ body {
   user-select: none;
 }
 
-/* discreet version label */
-.version {
-  position: fixed;
-  top: 4px;
-  right: 6px;
-  font-size: 0.5rem;
-  color: rgba(255, 255, 255, 0.6);
-  font-family: "Courier New", Courier, monospace;
-  z-index: 1;
-  pointer-events: none;
-}

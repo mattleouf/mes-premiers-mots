@@ -18,6 +18,7 @@ const ASSETS = [
   'game/data/words-fr.json',
   'settings/index.html',
   'settings/css/settings.css',
+  'settings/js/settings.js',
   'celebration/index.html',
   'celebration/css/celebration.css',
   'celebration/js/celebration.js',

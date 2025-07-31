@@ -44,17 +44,23 @@ window.addEventListener('DOMContentLoaded', async () => {
   async function prefetchResources() {
     overlay.classList.remove('hidden');
     let loaded = 0;
-    for (const url of resources) {
-      try {
-        await fetch(url);
-      } catch (e) {
-        // ignore failures (offline or 404)
-      }
+    const update = () => {
       loaded++;
       const pct = Math.round((loaded / resources.length) * 100);
       progressBar.style.width = pct + '%';
       progressText.textContent = pct + '%';
-    }
+    };
+
+    await Promise.all(
+      resources.map(async (url) => {
+        try {
+          await fetch(url);
+        } catch (e) {
+          // ignore failures (offline or 404)
+        }
+        update();
+      })
+    );
     overlay.classList.add('hidden');
   }
 
