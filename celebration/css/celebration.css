@@ -56,7 +56,8 @@ body {
   top: 50%;
   transform: translate(-50%, -50%);
   font-size: clamp(4rem, 20vmin, 8rem);
-  animation: pulse 2s ease-in-out infinite;
+  animation: pulse 1.6s ease-in-out infinite;
+  z-index: 1;
   pointer-events: none;
 }
 
