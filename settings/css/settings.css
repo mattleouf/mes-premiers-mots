@@ -1,5 +1,37 @@
 /* Settings page styles */
 body {
   padding: 2rem;
-  font-family: sans-serif;
+  font-family: "Nunito", sans-serif;
+  background: #f7f7f5;
+}
+
+h1 {
+  color: #ff9966;
+  text-align: center;
+  margin-top: 0;
+}
+
+.option-group {
+  margin: 2rem 0;
+}
+
+.option-group h2 {
+  color: #ff9966;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.option-group label {
+  display: block;
+  margin: 0.5rem 0;
+}
+
+.option-group .desc {
+  font-size: 0.85rem;
+  color: #555;
+  margin-left: 1.5rem;
+}
+
+.back-btn {
+  margin-top: 2rem;
 }

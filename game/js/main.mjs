@@ -379,6 +379,12 @@ function showWord(wordObj) {
 async function startGame() {
   if (wordList.length === 0) {
     wordList = await loadWords();
+    const lengthSetting = localStorage.getItem('wordLength') || 'mixed';
+    if (lengthSetting === 'short') {
+      wordList = wordList.filter((w) => w.word.length <= 5);
+    } else if (lengthSetting === 'long') {
+      wordList = wordList.filter((w) => w.word.length >= 6);
+    }
   }
   const word = nextWord();
   showWord(word);
