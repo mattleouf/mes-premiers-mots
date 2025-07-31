@@ -47,6 +47,17 @@ body {
   height: 80vmin;
   margin: 2rem auto;
   animation: wheelPulse 4s ease-in-out infinite;
+  position: relative;
+}
+
+#thumb-up {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(4rem, 20vmin, 8rem);
+  animation: pulse 2s ease-in-out infinite;
+  pointer-events: none;
 }
 
 @keyframes wheelPulse {
