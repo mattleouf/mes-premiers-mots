@@ -14,19 +14,12 @@
   <h1 class="titan-one-regular">Paramètres</h1>
 
   <section class="option-group nunito-regular">
-    <h2>🟧 Longueur des mots</h2>
-    <label>
-      <input type="radio" name="wordLength" value="short">
-      Court seulement – <span class="desc">mots de 5 lettres ou moins</span>
-    </label>
-    <label>
-      <input type="radio" name="wordLength" value="mixed">
-      Mélangé (défaut) – <span class="desc">toutes les longueurs</span>
-    </label>
-    <label>
-      <input type="radio" name="wordLength" value="long">
-      Long seulement – <span class="desc">mots de 6 lettres ou plus</span>
-    </label>
+    <h2 class="nunito-regular">🟧 Longueur des mots</h2>
+    <select id="wordLength" name="wordLength" class="nunito-regular">
+      <option value="short">Court seulement – mots de 5 lettres ou moins</option>
+      <option value="mixed">Mélangé (défaut) – toutes les longueurs</option>
+      <option value="long">Long seulement – mots de 6 lettres ou plus</option>
+    </select>
   </section>
 
   <button id="back" class="btn options back-btn nunito-regular">Retour</button>
