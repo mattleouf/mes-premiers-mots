@@ -48,20 +48,4 @@ h1 {
   display: block;
 }
 
-.btn {
-  font-family: "Nunito", sans-serif;
-  font-size: 1.25rem;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.btn:hover {
-  opacity: 0.9;
-}
-
-.options {
-  background-color: #2196f3;
-  color: #fff;
-}
+/* button styles moved to base.css */
