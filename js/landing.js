@@ -164,9 +164,10 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   requestAnimationFrame(step);
 
-  if (!localStorage.getItem('prefetched')) {
+  const PREFETCH_VERSION = 'mpm-cache-v2';
+  if (localStorage.getItem('prefetched') !== PREFETCH_VERSION) {
     await prefetchResources();
-    localStorage.setItem('prefetched', '1');
+    localStorage.setItem('prefetched', PREFETCH_VERSION);
   } else {
     overlay.classList.add('hidden');
   }
