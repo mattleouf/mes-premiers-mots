@@ -15,7 +15,7 @@ function audioCtx() {
 );
 
 /* ---- 2. helper that guarantees the context is running ---- */
-async function ensureRunning() {
+export async function ensureRunning() {
   const c = audioCtx();
   if (c.state !== 'running') await c.resume(); // await is vital
 }

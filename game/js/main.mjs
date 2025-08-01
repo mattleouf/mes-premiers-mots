@@ -1,6 +1,7 @@
 import { setupDragDrop } from './drag-drop.mjs';
 import { allSlotsFilled } from './word-check.mjs';
 import { startConfetti as createConfettiEffect } from '../../js/confetti.js';
+import { ensureRunning } from './audio.mjs';
 
 let stopConfettiEffect;
 let bounceCount = 0;
@@ -401,9 +402,16 @@ window.addEventListener('DOMContentLoaded', () => {
   sessionLimit = parseLimit(sessionStorage.getItem('wordLimit'));
   loadHistory();
   renderHistory();
-  startGame();
   repositionTiles();
   document.fonts.ready.then(repositionTiles);
+
+  const overlay = document.getElementById('start-overlay');
+  const startBtn = document.getElementById('start-btn');
+  startBtn.addEventListener('click', async () => {
+    overlay.classList.add('hidden');
+    await ensureRunning();
+    startGame();
+  });
 
   const settingsBtn = document.getElementById('settings-btn');
   const continueBtn = document.getElementById('continue-btn');
