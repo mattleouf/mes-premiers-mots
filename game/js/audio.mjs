@@ -1,15 +1,22 @@
 let ctx;
 
-function getContext() {
+async function getContext() {
   if (!ctx) {
     ctx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (ctx.state === 'suspended') {
+    try {
+      await ctx.resume();
+    } catch (e) {
+      // ignore resume errors
+    }
   }
   return ctx;
 }
 
-export function playSuccess() {
+export async function playSuccess() {
   try {
-    const audioCtx = getContext();
+    const audioCtx = await getContext();
     const o = audioCtx.createOscillator();
     const g = audioCtx.createGain();
     o.type = 'sine';
@@ -24,9 +31,9 @@ export function playSuccess() {
   }
 }
 
-export function playError() {
+export async function playError() {
   try {
-    const audioCtx = getContext();
+    const audioCtx = await getContext();
     const o = audioCtx.createOscillator();
     const g = audioCtx.createGain();
     o.type = 'square';
@@ -46,9 +53,10 @@ export function playError() {
 // simply ignoring play requests while the audio is already playing.
 const letterCache = {};
 
-export function playLetter(letter) {
+export async function playLetter(letter) {
   const upper = letter.toUpperCase();
   try {
+    await getContext();
     let audio = letterCache[upper];
     if (!audio) {
       const url = new URL(`../../assets/audio/alphabet/FR/${upper}.mp3`, import.meta.url);
@@ -57,7 +65,7 @@ export function playLetter(letter) {
     }
     if (!audio.paused) return; // debounce: don't overlap same letter audio
     audio.currentTime = 0;
-    audio.play().catch(() => {});
+    await audio.play().catch(() => {});
   } catch (e) {
     console.log('Letter', upper);
   }
