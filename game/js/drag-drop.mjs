@@ -1,4 +1,4 @@
-import { playSuccess, playError, playLetter } from './audio.mjs';
+import { playLetter } from './audio.mjs';
 
 export function setupDragDrop(slots, tiles, onComplete) {
   const isComplete = () => slots.every((s) => s.classList.contains('filled'));
@@ -92,9 +92,8 @@ export function setupDragDrop(slots, tiles, onComplete) {
         dropSlot.classList.remove('preview');
         tile.used = true;
         tile.style.visibility = 'hidden';
-        playSuccess();
-        // After the success chime, announce the locked-in letter.
-        setTimeout(() => playLetter(letter), 500);
+        // Announce the locked-in letter immediately upon correct placement.
+        playLetter(letter);
         dropSlot.addEventListener('animationend', () => dropSlot.classList.remove('placed'), { once: true });
         if (isComplete()) {
           onComplete();
@@ -102,7 +101,6 @@ export function setupDragDrop(slots, tiles, onComplete) {
       } else {
         wrongDrop = true;
         dropSlot.classList.add('wrong', 'flash-letter');
-        playError();
         dropSlot.addEventListener('animationend', () => {
           dropSlot.classList.remove('wrong');
           dropSlot.classList.remove('flash-letter');
