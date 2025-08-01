@@ -2,43 +2,44 @@
 // decoded into an AudioBuffer and a fresh AudioBufferSourceNode is
 // created for each playback so repeated letters work reliably across
 // browsers, including iOS.
-const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-// Resume the audio context on the first user gesture to satisfy iOS
-// autoplay restrictions. Some browsers might block this window-level
-// handler, so playLetter also attempts to resume as a fallback.
-function unlock() {
-  if (ctx.state === 'suspended') {
-    ctx.resume();
-  }
+// Lazy-create the audio context so it's only built after a user gesture.
+let ctx;
+function audioCtx() {
+  return ctx ??= new (window.AudioContext || window.webkitAudioContext)();
 }
-window.addEventListener('pointerdown', unlock, { once: true });
 
-const letterCache = {};
+/* ---- 1. unlock on any gesture Safari/WebView understands ---- */
+['pointerdown', 'touchstart', 'click'].forEach(type =>
+  window.addEventListener(type, () => audioCtx().resume(), { once: true })
+);
 
-// Resume the context on demand in case the initial unlock was prevented
-// by event propagation (e.g., pointerdown on a tile stops bubbling).
+/* ---- 2. helper that guarantees the context is running ---- */
+async function ensureRunning() {
+  const c = audioCtx();
+  if (c.state !== 'running') await c.resume(); // await is vital
+}
+
+/* ---- 3. play one letter ---- */
+const cache = {};
 export async function playLetter(letter) {
-  if (ctx.state === 'suspended') {
-    ctx.resume();
-  }
+  await ensureRunning(); // must finish before start()
   const upper = letter.toUpperCase();
-  try {
-    let buffer = letterCache[upper];
-    if (!buffer) {
-      const url = new URL(`../../assets/audio/alphabet/FR/${upper}.mp3`, import.meta.url);
-      const res = await fetch(url);
-      const arrayBuf = await res.arrayBuffer();
-      buffer = await ctx.decodeAudioData(arrayBuf);
-      letterCache[upper] = buffer;
-    }
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    source.connect(ctx.destination);
-    source.start();
-  } catch (e) {
-    console.log('Letter', upper);
+  let buf = cache[upper];
+  if (!buf) {
+    const url = new URL(
+      `../../assets/audio/alphabet/FR/${upper}.mp3`,
+      import.meta.url
+    );
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+    const bytes = await res.arrayBuffer();
+    buf = cache[upper] = await audioCtx().decodeAudioData(bytes);
   }
+  const src = audioCtx().createBufferSource();
+  src.buffer = buf;
+  src.connect(audioCtx().destination);
+  src.start();
 }
 
 // This module intentionally only exposes the letter audio. All other
