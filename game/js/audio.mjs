@@ -1,53 +1,3 @@
-let ctx;
-
-async function getContext() {
-  if (!ctx) {
-    ctx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  if (ctx.state === 'suspended') {
-    try {
-      await ctx.resume();
-    } catch (e) {
-      // ignore resume errors
-    }
-  }
-  return ctx;
-}
-
-export async function playSuccess() {
-  try {
-    const audioCtx = await getContext();
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = 'sine';
-    o.frequency.value = 880;
-    o.connect(g);
-    g.connect(audioCtx.destination);
-    o.start();
-    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
-    o.stop(audioCtx.currentTime + 0.5);
-  } catch (e) {
-    console.log('Success!');
-  }
-}
-
-export async function playError() {
-  try {
-    const audioCtx = await getContext();
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = 'square';
-    o.frequency.value = 220;
-    o.connect(g);
-    g.connect(audioCtx.destination);
-    o.start();
-    g.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
-    o.stop(audioCtx.currentTime + 0.4);
-  } catch (e) {
-    console.log('Error!');
-  }
-}
-
 // Cache letter audio elements so each file is loaded once and reused.
 // Each playback explicitly resets the element so the requested letter
 // always plays, even if the same letter is triggered rapidly.
@@ -56,7 +6,6 @@ const letterCache = {};
 export async function playLetter(letter) {
   const upper = letter.toUpperCase();
   try {
-    await getContext();
     let audio = letterCache[upper];
     if (!audio) {
       const url = new URL(`../../assets/audio/alphabet/FR/${upper}.mp3`, import.meta.url);
@@ -71,3 +20,6 @@ export async function playLetter(letter) {
     console.log('Letter', upper);
   }
 }
+
+// This module intentionally only exposes the letter audio. All other
+// feedback sounds have been removed for a quieter gameplay experience.
