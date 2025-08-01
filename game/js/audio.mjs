@@ -40,3 +40,25 @@ export function playError() {
     console.log('Error!');
   }
 }
+
+// Cache letter audio elements so each file is loaded once and reused.
+// Using HTMLAudioElement playback allows us to debounce per letter by
+// simply ignoring play requests while the audio is already playing.
+const letterCache = {};
+
+export function playLetter(letter) {
+  const upper = letter.toUpperCase();
+  try {
+    let audio = letterCache[upper];
+    if (!audio) {
+      const url = new URL(`../../assets/audio/alphabet/FR/${upper}.mp3`, import.meta.url);
+      audio = new Audio(url.href);
+      letterCache[upper] = audio;
+    }
+    if (!audio.paused) return; // debounce: don't overlap same letter audio
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+  } catch (e) {
+    console.log('Letter', upper);
+  }
+}
