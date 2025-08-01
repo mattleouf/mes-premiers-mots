@@ -49,8 +49,8 @@ export async function playError() {
 }
 
 // Cache letter audio elements so each file is loaded once and reused.
-// Using HTMLAudioElement playback allows us to debounce per letter by
-// simply ignoring play requests while the audio is already playing.
+// Each playback explicitly resets the element so the requested letter
+// always plays, even if the same letter is triggered rapidly.
 const letterCache = {};
 
 export async function playLetter(letter) {
@@ -63,7 +63,8 @@ export async function playLetter(letter) {
       audio = new Audio(url.href);
       letterCache[upper] = audio;
     }
-    if (!audio.paused) return; // debounce: don't overlap same letter audio
+    // Always restart playback so the letter audio is heard every time.
+    audio.pause();
     audio.currentTime = 0;
     await audio.play().catch(() => {});
   } catch (e) {
