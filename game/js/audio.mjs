@@ -1,19 +1,35 @@
-// Play letter pronunciations using simple HTMLAudioElements. Each
-// letter's audio element is cached and rewound to the start on every
-// playback.
+// Play letter pronunciations using the Web Audio API. Letter clips are
+// decoded into an AudioBuffer and a fresh AudioBufferSourceNode is
+// created for each playback so repeated letters work reliably across
+// browsers, including iOS.
+const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+// Resume the audio context on the first user gesture to satisfy iOS
+// autoplay restrictions.
+function unlock() {
+  if (ctx.state === 'suspended') {
+    ctx.resume();
+  }
+}
+window.addEventListener('pointerdown', unlock, { once: true });
+
 const letterCache = {};
 
 export async function playLetter(letter) {
   const upper = letter.toUpperCase();
   try {
-    let audio = letterCache[upper];
-    if (!audio) {
+    let buffer = letterCache[upper];
+    if (!buffer) {
       const url = new URL(`../../assets/audio/alphabet/FR/${upper}.mp3`, import.meta.url);
-      audio = new Audio(url);
-      letterCache[upper] = audio;
+      const res = await fetch(url);
+      const arrayBuf = await res.arrayBuffer();
+      buffer = await ctx.decodeAudioData(arrayBuf);
+      letterCache[upper] = buffer;
     }
-    audio.currentTime = 0;
-    await audio.play();
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.connect(ctx.destination);
+    source.start();
   } catch (e) {
     console.log('Letter', upper);
   }
