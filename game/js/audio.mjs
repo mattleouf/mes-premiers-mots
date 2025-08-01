@@ -5,7 +5,8 @@
 const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
 // Resume the audio context on the first user gesture to satisfy iOS
-// autoplay restrictions.
+// autoplay restrictions. Some browsers might block this window-level
+// handler, so playLetter also attempts to resume as a fallback.
 function unlock() {
   if (ctx.state === 'suspended') {
     ctx.resume();
@@ -15,7 +16,12 @@ window.addEventListener('pointerdown', unlock, { once: true });
 
 const letterCache = {};
 
+// Resume the context on demand in case the initial unlock was prevented
+// by event propagation (e.g., pointerdown on a tile stops bubbling).
 export async function playLetter(letter) {
+  if (ctx.state === 'suspended') {
+    ctx.resume();
+  }
   const upper = letter.toUpperCase();
   try {
     let buffer = letterCache[upper];
