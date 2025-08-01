@@ -1,4 +1,6 @@
-const SW_VERSION = 'v3';
+// Disable service worker caching by unregistering any existing workers
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register(`/sw.js?v=${SW_VERSION}`);
+  navigator.serviceWorker.getRegistrations().then((registrations) => {
+    registrations.forEach((registration) => registration.unregister());
+  });
 }
