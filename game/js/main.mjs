@@ -231,14 +231,19 @@ function animateTilesIn(tiles) {
   const order = [...tiles];
   shuffle(order);
   order.forEach((tile, idx) => {
-    tile.animate(
+    const anim = tile.animate(
       [
         { transform: 'scale(0)', opacity: 0 },
         { transform: 'scale(1.2)', opacity: 1 },
         { transform: 'scale(1)', opacity: 1 }
       ],
-      { duration: 300, easing: 'ease-out', delay: idx * 150, fill: 'forwards' }
+      { duration: 300, easing: 'ease-out', delay: idx * 150 }
     );
+    anim.addEventListener('finish', () => {
+      tile.style.opacity = 1;
+      tile.style.transform = '';
+      anim.cancel();
+    });
   });
 }
 
@@ -469,7 +474,7 @@ async function handleFirstSelection(wordObj, btn) {
       { duration: 300, easing: 'ease-in-out', fill: 'forwards' }
     )
     .finished;
-  await new Promise((res) => setTimeout(res, 500));
+  await new Promise((res) => setTimeout(res, 400));
   overlay.classList.add('hidden');
 
   // Reveal game elements
