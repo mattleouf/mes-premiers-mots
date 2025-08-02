@@ -378,12 +378,6 @@ function showWord(wordObj) {
 async function startGame() {
   if (wordList.length === 0) {
     wordList = await loadWords();
-    const lengthSetting = localStorage.getItem('wordLength') || 'mixed';
-    if (lengthSetting === 'short') {
-      wordList = wordList.filter((w) => w.word.length <= 5);
-    } else if (lengthSetting === 'long') {
-      wordList = wordList.filter((w) => w.word.length >= 6);
-    }
   }
   const word = nextWord();
   showWord(word);
@@ -397,7 +391,63 @@ function closeSettings() {
   document.getElementById('settings-modal').classList.add('hidden');
 }
 
-window.addEventListener('DOMContentLoaded', () => {
+async function handleFirstSelection(wordObj, btn) {
+  btn.classList.add('selected');
+  const overlay = document.getElementById('start-overlay');
+  const startRect = btn.getBoundingClientRect();
+  await ensureRunning();
+  showWord(wordObj);
+  previousWord = wordObj;
+  const picture = document.getElementById('picture');
+  const endRect = picture.getBoundingClientRect();
+  const fly = document.createElement('span');
+  fly.textContent = wordObj.emoji;
+  fly.style.position = 'fixed';
+  fly.style.left = `${startRect.left + startRect.width / 2}px`;
+  fly.style.top = `${startRect.top + startRect.height / 2}px`;
+  fly.style.transform = 'translate(-50%, -50%)';
+  fly.style.fontSize = window.getComputedStyle(picture).fontSize;
+  fly.style.zIndex = '10';
+  document.body.appendChild(fly);
+  await fly
+    .animate(
+      [
+        {
+          left: `${startRect.left + startRect.width / 2}px`,
+          top: `${startRect.top + startRect.height / 2}px`,
+        },
+        {
+          left: `${endRect.left + endRect.width / 2}px`,
+          top: `${endRect.top + endRect.height / 2}px`,
+        },
+      ],
+      { duration: 300, easing: 'ease-in-out' }
+    )
+    .finished;
+  document.body.removeChild(fly);
+  overlay.classList.add('hidden');
+}
+
+function renderFirstWordOptions() {
+  const container = document.getElementById('word-choices');
+  if (!container) return;
+  container.innerHTML = '';
+  const shuffled = [...wordList];
+  shuffle(shuffled);
+  const options = shuffled.slice(0, 4);
+  options.forEach((wordObj) => {
+    const option = document.createElement('div');
+    option.className = 'word-option';
+    const btn = document.createElement('button');
+    btn.className = 'btn play word-btn';
+    btn.textContent = wordObj.emoji;
+    btn.addEventListener('click', () => handleFirstSelection(wordObj, btn));
+    option.appendChild(btn);
+    container.appendChild(option);
+  });
+}
+
+window.addEventListener('DOMContentLoaded', async () => {
   wordsPlayed = 0;
   sessionLimit = parseLimit(sessionStorage.getItem('wordLimit'));
   loadHistory();
@@ -405,13 +455,14 @@ window.addEventListener('DOMContentLoaded', () => {
   repositionTiles();
   document.fonts.ready.then(repositionTiles);
 
-  const overlay = document.getElementById('start-overlay');
-  const startBtn = document.getElementById('start-btn');
-  startBtn.addEventListener('click', async () => {
-    overlay.classList.add('hidden');
-    await ensureRunning();
-    startGame();
-  });
+  wordList = await loadWords();
+  const lengthSetting = localStorage.getItem('wordLength') || 'mixed';
+  if (lengthSetting === 'short') {
+    wordList = wordList.filter((w) => w.word.length <= 5);
+  } else if (lengthSetting === 'long') {
+    wordList = wordList.filter((w) => w.word.length >= 6);
+  }
+  renderFirstWordOptions();
 
   const settingsBtn = document.getElementById('settings-btn');
   const continueBtn = document.getElementById('continue-btn');

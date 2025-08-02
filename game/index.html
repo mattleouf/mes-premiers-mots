@@ -8,11 +8,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Titan+One&family=Nunito:wght@600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/landing.css">
   <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
   <div id="start-overlay" class="start-overlay">
-    <button id="start-btn" class="btn play">Commencer</button>
+    <div class="word-select">
+      <h1 class="title titan-one-regular">Choisis ton premier mot</h1>
+      <div id="word-choices" class="word-choices"></div>
+    </div>
   </div>
   <div id="picture" aria-label="Illustration"></div>
   <div id="word" class="word"></div>
