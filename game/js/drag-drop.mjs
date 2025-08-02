@@ -80,8 +80,8 @@ export function setupDragDrop(slots, tiles, onComplete) {
 
   const end = (e) => {
     if (!activeTile) return;
-    moveEvents.forEach((ev) => window.removeEventListener(ev, move));
-    endEvents.forEach((ev) => window.removeEventListener(ev, end));
+    moveEvents.forEach((ev) => document.removeEventListener(ev, move));
+    endEvents.forEach((ev) => document.removeEventListener(ev, end));
     // Ensure the tile position reflects the final pointer location.
     // Fast drags may not fire a last pointermove, so manually update
     // using the pointerup coordinates before evaluating the drop.
@@ -138,53 +138,65 @@ export function setupDragDrop(slots, tiles, onComplete) {
     startY = p.clientY;
     outerTarget = null;
     tile.classList.add('active');
-    moveEvents.forEach((ev) => window.addEventListener(ev, move));
-    endEvents.forEach((ev) => window.addEventListener(ev, end));
+    if (e.pointerId !== undefined && tile.setPointerCapture) {
+      tile.setPointerCapture(e.pointerId);
+    }
+    moveEvents.forEach((ev) => document.addEventListener(ev, move, { passive: false }));
+    endEvents.forEach((ev) => document.addEventListener(ev, end));
   };
 
   tiles.forEach((tile) => {
     tile.draggable = false;
     tile.style.touchAction = 'none';
     startEvents.forEach((type) => {
-      tile.addEventListener(type, (e) => {
-        e.stopPropagation();
-        startDrag(tile, e);
-      });
+      tile.addEventListener(
+        type,
+        (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          startDrag(tile, e);
+        },
+        { passive: false }
+      );
     });
   });
 
   const container = document.getElementById('tiles');
   startEvents.forEach((type) => {
-    container.addEventListener(type, (e) => {
-      if (e.target.classList.contains('tile')) return;
-      const p = getPoint(e);
-      const x = p.clientX;
-      const y = p.clientY;
-      let candidate = null;
-      let bestDist = Infinity;
-      tiles.forEach((tile) => {
-        if (tile.used) return;
-        const r = tile.getBoundingClientRect();
-        const marginX = r.width * 0.25; // expand width 50%
-        const marginY = r.height * 0.25;
-        if (
-          x >= r.left - marginX &&
-          x <= r.right + marginX &&
-          y >= r.top - marginY &&
-          y <= r.bottom + marginY
-        ) {
-          const cx = r.left + r.width / 2;
-          const cy = r.top + r.height / 2;
-          const dist = Math.hypot(x - cx, y - cy);
-          if (dist < bestDist) {
-            bestDist = dist;
-            candidate = tile;
+    container.addEventListener(
+      type,
+      (e) => {
+        if (e.target.classList.contains('tile')) return;
+        const p = getPoint(e);
+        const x = p.clientX;
+        const y = p.clientY;
+        let candidate = null;
+        let bestDist = Infinity;
+        tiles.forEach((tile) => {
+          if (tile.used) return;
+          const r = tile.getBoundingClientRect();
+          const marginX = r.width * 0.25; // expand width 50%
+          const marginY = r.height * 0.25;
+          if (
+            x >= r.left - marginX &&
+            x <= r.right + marginX &&
+            y >= r.top - marginY &&
+            y <= r.bottom + marginY
+          ) {
+            const cx = r.left + r.width / 2;
+            const cy = r.top + r.height / 2;
+            const dist = Math.hypot(x - cx, y - cy);
+            if (dist < bestDist) {
+              bestDist = dist;
+              candidate = tile;
+            }
           }
+        });
+        if (candidate) {
+          startDrag(candidate, e);
         }
-      });
-      if (candidate) {
-        startDrag(candidate, e);
-      }
-    });
+      },
+      { passive: false }
+    );
   });
 }
