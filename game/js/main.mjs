@@ -397,6 +397,15 @@ function showWord(wordObj, animateTiles = true) {
   };
   if (animateTiles) {
     requestAnimationFrame(() => animateTilesIn(tiles));
+  } else if (wordsPlayed > 0) {
+    // When switching to the next word we skip the entrance animation to
+    // avoid delay, but the tiles still need to be visible. Explicitly reset
+    // the styles that `createTiles` uses to hide them so they appear
+    // immediately.
+    tiles.forEach((tile) => {
+      tile.style.opacity = 1;
+      tile.style.transform = '';
+    });
   }
 }
 
