@@ -237,7 +237,7 @@ function animateTilesIn(tiles) {
         { transform: 'scale(1.2)', opacity: 1 },
         { transform: 'scale(1)', opacity: 1 }
       ],
-      { duration: 400, easing: 'ease-out', delay: idx * 200, fill: 'forwards' }
+      { duration: 300, easing: 'ease-out', delay: idx * 150, fill: 'forwards' }
     );
   });
 }
