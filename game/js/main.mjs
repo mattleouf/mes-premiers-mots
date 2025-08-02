@@ -405,7 +405,7 @@ async function startGame() {
     wordList = await loadWords();
   }
   const word = nextWord();
-  showWord(word);
+  showWord(word, wordsPlayed === 0);
 }
 
 function openSettings() {
