@@ -393,13 +393,36 @@ function closeSettings() {
 
 async function handleFirstSelection(wordObj, btn) {
   btn.classList.add('selected');
+  btn.parentElement.classList.add('selected');
   const overlay = document.getElementById('start-overlay');
   const startRect = btn.getBoundingClientRect();
+
   await ensureRunning();
   showWord(wordObj);
   previousWord = wordObj;
+
+  // Hide game elements until transition completes
+  const revealEls = [
+    document.getElementById('picture'),
+    document.getElementById('word'),
+    document.getElementById('tiles'),
+    document.getElementById('settings-btn'),
+    document.getElementById('message'),
+    document.getElementById('history'),
+    document.getElementById('next'),
+  ];
+  revealEls.forEach((el) => {
+    if (el) el.style.opacity = 0;
+  });
+
+  // Fade out other choices and title
+  overlay.classList.add('selection-made');
+  await new Promise((res) => setTimeout(res, 300));
+
   const picture = document.getElementById('picture');
   const endRect = picture.getBoundingClientRect();
+
+  // Create flying emoji at original position
   const fly = document.createElement('span');
   fly.textContent = wordObj.emoji;
   fly.style.position = 'fixed';
@@ -409,6 +432,8 @@ async function handleFirstSelection(wordObj, btn) {
   fly.style.fontSize = window.getComputedStyle(picture).fontSize;
   fly.style.zIndex = '10';
   document.body.appendChild(fly);
+  btn.style.visibility = 'hidden';
+
   await fly
     .animate(
       [
@@ -426,6 +451,14 @@ async function handleFirstSelection(wordObj, btn) {
     .finished;
   document.body.removeChild(fly);
   overlay.classList.add('hidden');
+
+  // Reveal game elements
+  revealEls.forEach((el) => {
+    if (el) {
+      el.style.transition = 'opacity 0.3s';
+      el.style.opacity = 1;
+    }
+  });
 }
 
 function renderFirstWordOptions() {
@@ -439,7 +472,7 @@ function renderFirstWordOptions() {
     const option = document.createElement('div');
     option.className = 'word-option';
     const btn = document.createElement('button');
-    btn.className = 'btn play word-btn';
+    btn.className = 'word-btn';
     btn.textContent = wordObj.emoji;
     btn.addEventListener('click', () => handleFirstSelection(wordObj, btn));
     option.appendChild(btn);
