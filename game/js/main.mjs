@@ -219,10 +219,27 @@ function createTiles(word) {
     positions.push(pos);
     d.style.left = `${pos.x}px`;
     d.style.top = `${pos.y}px`;
+    d.style.opacity = 0;
+    d.style.transform = 'scale(0)';
     container.appendChild(d);
     tiles.push(d);
   }
   return tiles;
+}
+
+function animateTilesIn(tiles) {
+  const order = [...tiles];
+  shuffle(order);
+  order.forEach((tile, idx) => {
+    tile.animate(
+      [
+        { transform: 'scale(0)', opacity: 0 },
+        { transform: 'scale(1.2)', opacity: 1 },
+        { transform: 'scale(1)', opacity: 1 }
+      ],
+      { duration: 200, easing: 'ease-out', delay: idx * 100, fill: 'forwards' }
+    );
+  });
 }
 
 function startConfetti() {
@@ -338,7 +355,7 @@ async function animateWordReveal(slots) {
     .finished;
 }
 
-function showWord(wordObj) {
+function showWord(wordObj, animateTiles = true) {
   document.getElementById('picture').textContent = wordObj.emoji;
   const slots = createSlots(wordObj.word);
   const tiles = createTiles(wordObj.word);
@@ -373,6 +390,9 @@ function showWord(wordObj) {
       setTimeout(() => document.body.classList.remove('word-fade-in'), 200);
     }, 200);
   };
+  if (animateTiles) {
+    requestAnimationFrame(() => animateTilesIn(tiles));
+  }
 }
 
 async function startGame() {
@@ -398,7 +418,7 @@ async function handleFirstSelection(wordObj, btn) {
   const startRect = btn.getBoundingClientRect();
 
   await ensureRunning();
-  showWord(wordObj);
+  showWord(wordObj, false);
   previousWord = wordObj;
 
   // Hide game elements until transition completes
@@ -449,16 +469,19 @@ async function handleFirstSelection(wordObj, btn) {
       { duration: 300, easing: 'ease-in-out' }
     )
     .finished;
-  document.body.removeChild(fly);
+  await new Promise((res) => setTimeout(res, 500));
   overlay.classList.add('hidden');
 
   // Reveal game elements
   revealEls.forEach((el) => {
     if (el) {
-      el.style.transition = 'opacity 0.3s';
+      el.style.transition = 'opacity 0.7s';
       el.style.opacity = 1;
     }
   });
+  await new Promise((res) => setTimeout(res, 700));
+  document.body.removeChild(fly);
+  animateTilesIn(currentTiles);
 }
 
 function renderFirstWordOptions() {
