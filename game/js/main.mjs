@@ -237,7 +237,7 @@ function animateTilesIn(tiles) {
         { transform: 'scale(1.2)', opacity: 1 },
         { transform: 'scale(1)', opacity: 1 }
       ],
-      { duration: 200, easing: 'ease-out', delay: idx * 100, fill: 'forwards' }
+      { duration: 400, easing: 'ease-out', delay: idx * 200, fill: 'forwards' }
     );
   });
 }
@@ -466,7 +466,7 @@ async function handleFirstSelection(wordObj, btn) {
           top: `${endRect.top + endRect.height / 2}px`,
         },
       ],
-      { duration: 300, easing: 'ease-in-out' }
+      { duration: 300, easing: 'ease-in-out', fill: 'forwards' }
     )
     .finished;
   await new Promise((res) => setTimeout(res, 500));

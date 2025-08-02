@@ -7,6 +7,19 @@ export function setupDragDrop(slots, tiles, onComplete) {
   let activeTile = null;
   let startX, startY;
 
+  const startEvents = window.PointerEvent
+    ? ['pointerdown']
+    : ['mousedown', 'touchstart'];
+  const moveEvents = window.PointerEvent
+    ? ['pointermove']
+    : ['mousemove', 'touchmove'];
+  const endEvents = window.PointerEvent
+    ? ['pointerup', 'pointercancel']
+    : ['mouseup', 'touchend', 'touchcancel'];
+
+  const getPoint = (e) =>
+    e.touches?.[0] || e.changedTouches?.[0] || e;
+
   const intersectingSlot = (tile) => {
     const t = tile.getBoundingClientRect();
     return slots.find((slot) => {
@@ -38,8 +51,9 @@ export function setupDragDrop(slots, tiles, onComplete) {
 
   const move = (e) => {
     if (!activeTile) return;
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
+    const p = getPoint(e);
+    const dx = p.clientX - startX;
+    const dy = p.clientY - startY;
     activeTile.style.transform = `translate(${dx}px, ${dy}px) scale(1.1)`;
 
     const over = intersectingSlot(activeTile);
@@ -66,9 +80,8 @@ export function setupDragDrop(slots, tiles, onComplete) {
 
   const end = (e) => {
     if (!activeTile) return;
-    window.removeEventListener('pointermove', move);
-    window.removeEventListener('pointerup', end);
-    window.removeEventListener('pointercancel', end);
+    moveEvents.forEach((ev) => window.removeEventListener(ev, move));
+    endEvents.forEach((ev) => window.removeEventListener(ev, end));
     // Ensure the tile position reflects the final pointer location.
     // Fast drags may not fire a last pointermove, so manually update
     // using the pointerup coordinates before evaluating the drop.
@@ -120,48 +133,58 @@ export function setupDragDrop(slots, tiles, onComplete) {
   const startDrag = (tile, e) => {
     if (tile.used || activeTile) return;
     activeTile = tile;
-    startX = e.clientX;
-    startY = e.clientY;
+    const p = getPoint(e);
+    startX = p.clientX;
+    startY = p.clientY;
     outerTarget = null;
     tile.classList.add('active');
-    window.addEventListener('pointermove', move);
-    window.addEventListener('pointerup', end);
-    window.addEventListener('pointercancel', end);
+    moveEvents.forEach((ev) => window.addEventListener(ev, move));
+    endEvents.forEach((ev) => window.addEventListener(ev, end));
   };
 
   tiles.forEach((tile) => {
     tile.draggable = false;
     tile.style.touchAction = 'none';
-    tile.addEventListener('pointerdown', (e) => {
-      e.stopPropagation();
-      startDrag(tile, e);
+    startEvents.forEach((type) => {
+      tile.addEventListener(type, (e) => {
+        e.stopPropagation();
+        startDrag(tile, e);
+      });
     });
   });
 
   const container = document.getElementById('tiles');
-  container.addEventListener('pointerdown', (e) => {
-    if (e.target.classList.contains('tile')) return;
-    const x = e.clientX;
-    const y = e.clientY;
-    let candidate = null;
-    let bestDist = Infinity;
-    tiles.forEach((tile) => {
-      if (tile.used) return;
-      const r = tile.getBoundingClientRect();
-      const marginX = r.width * 0.25; // expand width 50%
-      const marginY = r.height * 0.25;
-      if (x >= r.left - marginX && x <= r.right + marginX && y >= r.top - marginY && y <= r.bottom + marginY) {
-        const cx = r.left + r.width / 2;
-        const cy = r.top + r.height / 2;
-        const dist = Math.hypot(x - cx, y - cy);
-        if (dist < bestDist) {
-          bestDist = dist;
-          candidate = tile;
+  startEvents.forEach((type) => {
+    container.addEventListener(type, (e) => {
+      if (e.target.classList.contains('tile')) return;
+      const p = getPoint(e);
+      const x = p.clientX;
+      const y = p.clientY;
+      let candidate = null;
+      let bestDist = Infinity;
+      tiles.forEach((tile) => {
+        if (tile.used) return;
+        const r = tile.getBoundingClientRect();
+        const marginX = r.width * 0.25; // expand width 50%
+        const marginY = r.height * 0.25;
+        if (
+          x >= r.left - marginX &&
+          x <= r.right + marginX &&
+          y >= r.top - marginY &&
+          y <= r.bottom + marginY
+        ) {
+          const cx = r.left + r.width / 2;
+          const cy = r.top + r.height / 2;
+          const dist = Math.hypot(x - cx, y - cy);
+          if (dist < bestDist) {
+            bestDist = dist;
+            candidate = tile;
+          }
         }
+      });
+      if (candidate) {
+        startDrag(candidate, e);
       }
     });
-    if (candidate) {
-      startDrag(candidate, e);
-    }
   });
 }
