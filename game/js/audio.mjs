@@ -20,8 +20,9 @@ export async function ensureRunning() {
   if (c.state !== 'running') await c.resume(); // await is vital
 }
 
-/* ---- 3. play one letter ---- */
+/* ---- 3. play audio clips ---- */
 const cache = {};
+
 export async function playLetter(letter) {
   await ensureRunning(); // must finish before start()
   const upper = letter.toUpperCase();
@@ -42,5 +43,27 @@ export async function playLetter(letter) {
   src.start();
 }
 
-// This module intentionally only exposes the letter audio. All other
+export async function playWord(word) {
+  await ensureRunning();
+  const upper = word.toUpperCase();
+  const file = upper.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const key = `WORD:${file}`;
+  let buf = cache[key];
+  if (!buf) {
+    const url = new URL(
+      `../../assets/audio/words/FR/${file}.mp3`,
+      import.meta.url
+    );
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+    const bytes = await res.arrayBuffer();
+    buf = cache[key] = await audioCtx().decodeAudioData(bytes);
+  }
+  const src = audioCtx().createBufferSource();
+  src.buffer = buf;
+  src.connect(audioCtx().destination);
+  src.start();
+}
+
+// This module intentionally only exposes the letter and word audio. All other
 // feedback sounds have been removed for a quieter gameplay experience.

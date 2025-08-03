@@ -1,7 +1,7 @@
 import { setupDragDrop } from './drag-drop.mjs';
 import { allSlotsFilled } from './word-check.mjs';
 import { startConfetti as createConfettiEffect } from '../../js/confetti.js';
-import { ensureRunning } from './audio.mjs';
+import { ensureRunning, playWord } from './audio.mjs';
 
 let stopConfettiEffect;
 let bounceCount = 0;
@@ -348,16 +348,17 @@ async function animateWordReveal(slots) {
   );
   await Promise.all(animations);
 
-  await wordEl
-    .animate(
-      [
-        { transform: 'scale(1)' },
-        { transform: 'scale(1.3)' },
-        { transform: 'scale(1)' },
-      ],
-      { duration, easing: 'ease' }
-    )
-    .finished;
+  const word = slots.map((s) => s.textContent).join('');
+  const wordAnim = wordEl.animate(
+    [
+      { transform: 'scale(1)' },
+      { transform: 'scale(1.3)' },
+      { transform: 'scale(1)' },
+    ],
+    { duration, easing: 'ease' }
+  );
+  playWord(word);
+  await wordAnim.finished;
 }
 
 function showWord(wordObj, animateTiles = true) {
