@@ -9,7 +9,21 @@ window.addEventListener('DOMContentLoaded', () => {
   const emojis = stored ? JSON.parse(stored) : [];
 
   const stopConfetti = startConfetti();
-  playBravo();
+
+  // Attempt to play the celebration audio immediately; if the browser
+  // blocks autoplay (e.g. due to missing user interaction), retry after
+  // the first pointer/touch/click event.
+  playBravo().catch(() => {
+    const retry = () => {
+      playBravo();
+      ['pointerdown', 'touchstart', 'click'].forEach((t) =>
+        window.removeEventListener(t, retry)
+      );
+    };
+    ['pointerdown', 'touchstart', 'click'].forEach((t) =>
+      window.addEventListener(t, retry, { once: true })
+    );
+  });
 
   const wrappers = [];
   const radius = 35; // circle radius in vmin
