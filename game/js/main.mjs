@@ -348,7 +348,6 @@ async function animateWordReveal(slots) {
   );
   await Promise.all(animations);
 
-  await playSuccess();
   const word = slots.map((s) => s.textContent).join('');
   const wordAnim = wordEl.animate(
     [
@@ -358,8 +357,7 @@ async function animateWordReveal(slots) {
     ],
     { duration, easing: 'ease' }
   );
-  playWord(word);
-  await wordAnim.finished;
+  await Promise.all([playWord(word), wordAnim.finished]);
 }
 
 function showWord(wordObj, animateTiles = true) {
@@ -376,8 +374,9 @@ function showWord(wordObj, animateTiles = true) {
   setupDragDrop(slots, tiles, () => {
       if (allSlotsFilled(slots)) {
         animateWordReveal(slots).then(() => {
-          addToHistory(wordObj.emoji);
+          playSuccess();
           celebrate();
+          addToHistory(wordObj.emoji);
           wordsPlayed++;
           if (sessionLimit !== Infinity && wordsPlayed >= sessionLimit) {
             endGame();

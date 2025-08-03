@@ -63,6 +63,7 @@ export async function playWord(word) {
   src.buffer = buf;
   src.connect(audioCtx().destination);
   src.start();
+  return new Promise((res) => src.addEventListener('ended', res, { once: true }));
 }
 
 export async function playSuccess() {
