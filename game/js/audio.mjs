@@ -65,5 +65,25 @@ export async function playWord(word) {
   src.start();
 }
 
-// This module intentionally only exposes the letter and word audio. All other
-// feedback sounds have been removed for a quieter gameplay experience.
+export async function playSuccess() {
+  await ensureRunning();
+  const key = 'SFX:SUCCESS';
+  let buf = cache[key];
+  if (!buf) {
+    const url = new URL(
+      '../../assets/audio/SFX/SUCCESS.mp3',
+      import.meta.url
+    );
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+    const bytes = await res.arrayBuffer();
+    buf = cache[key] = await audioCtx().decodeAudioData(bytes);
+  }
+  const src = audioCtx().createBufferSource();
+  src.buffer = buf;
+  src.connect(audioCtx().destination);
+  src.start();
+  return new Promise((res) => src.addEventListener('ended', res, { once: true }));
+}
+
+// This module intentionally only exposes the letter, word, and success audio.
