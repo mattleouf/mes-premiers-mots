@@ -15,16 +15,23 @@ function parseLimit(value) {
 let sessionLimit = parseLimit(sessionStorage.getItem('wordLimit'));
 let wordsPlayed = 0;
 
+function updateScale() {
+  const layout = document.querySelector('.game-layout');
+  if (!layout) return;
+  const width = layout.offsetWidth;
+  const height = layout.offsetHeight;
+  const scale = Math.min(window.innerWidth / width, window.innerHeight / height, 1);
+  layout.style.transform = `scale(${scale})`;
+}
+
 function repositionTiles() {
   const container = document.getElementById('tiles');
   if (!container) return;
-  const { width, height } = container.getBoundingClientRect();
+  const width = container.offsetWidth;
+  const height = container.offsetHeight;
   const sampleSlot = document.querySelector('.slot');
-  const slotRect = sampleSlot
-    ? sampleSlot.getBoundingClientRect()
-    : { width: 40, height: 50 };
-  const tileW = slotRect.width;
-  const tileH = slotRect.height;
+  const tileW = sampleSlot ? sampleSlot.offsetWidth : 40;
+  const tileH = sampleSlot ? sampleSlot.offsetHeight : 50;
   const marginX = tileW;
   // use a smaller vertical margin so random placement always has
   // some wiggle room even on short screens
@@ -57,6 +64,11 @@ function repositionTiles() {
     tile.style.left = `${pos.x}px`;
     tile.style.top = `${pos.y}px`;
   });
+}
+
+function handleResize() {
+  updateScale();
+  repositionTiles();
 }
 
 // Emoji history management
@@ -367,7 +379,7 @@ function showWord(wordObj, animateTiles = true) {
   const slots = createSlots(wordObj.word);
   const tiles = createTiles(wordObj.word);
   currentTiles = tiles;
-  document.fonts.ready.then(repositionTiles);
+  document.fonts.ready.then(handleResize);
   const nextBtn = document.getElementById('next');
   nextBtn.style.display = 'none';
   document.getElementById('message').classList.remove('show');
@@ -525,8 +537,8 @@ window.addEventListener('DOMContentLoaded', async () => {
   sessionLimit = parseLimit(sessionStorage.getItem('wordLimit'));
   loadHistory();
   renderHistory();
-  repositionTiles();
-  document.fonts.ready.then(repositionTiles);
+  handleResize();
+  document.fonts.ready.then(handleResize);
 
   wordList = await loadWords();
   const lengthSetting = localStorage.getItem('wordLength') || 'mixed';
@@ -558,5 +570,6 @@ window.addEventListener('DOMContentLoaded', async () => {
     sessionStorage.removeItem('wordHistory');
     window.location.href = '../';
   });
-  window.addEventListener('resize', repositionTiles);
+  window.addEventListener('resize', handleResize);
+  window.addEventListener('orientationchange', handleResize);
 });

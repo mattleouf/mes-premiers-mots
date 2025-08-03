@@ -1,10 +1,11 @@
 /* Game screen styling */
 :root {
-  --tile-width: clamp(40px, 10vw, 80px);
-  --tile-height: clamp(50px, 12vw, 100px);
-  --tile-font: clamp(2rem, 5vw, 3rem);
-  --picture-size: clamp(6.5rem, 20vw, 12rem);
-  --btn-font: clamp(1.2rem, 3vw, 1.6rem);
+  --tile-width: clamp(40px, 10vmin, 80px);
+  --tile-height: clamp(50px, 12vmin, 100px);
+  --tile-font: clamp(2rem, 5vmin, 3rem);
+  --picture-size: clamp(6.5rem, 20vmin, 12rem);
+  --btn-font: clamp(1.2rem, 3vmin, 1.6rem);
+  --tiles-height: min(35vh, 80vmin);
 }
 
 body {
@@ -21,6 +22,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  transform-origin: top center;
 }
 #picture {
   /* enlarge the emoji display */
@@ -54,8 +56,7 @@ body {
 }
 .tiles {
   position: relative;
-  height: 35vh;
-  max-height: clamp(300px, 40vh, 500px);
+  height: var(--tiles-height);
   width: 100%;
 }
 .tile {
@@ -302,9 +303,8 @@ body {
   .word {
     margin-bottom: 1rem;
   }
-  .tiles {
-    height: 50vh;
-    width: 100%;
+  :root {
+    --tiles-height: min(50vh, 80vmin);
   }
 }
 
