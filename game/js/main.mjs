@@ -1,7 +1,7 @@
 import { setupDragDrop } from './drag-drop.mjs';
 import { allSlotsFilled } from './word-check.mjs';
 import { startConfetti as createConfettiEffect } from '../../js/confetti.js';
-import { ensureRunning, playWord, playSuccess } from './audio.mjs';
+import { ensureRunning, playWord, playSuccess, playBubble } from './audio.mjs';
 
 let stopConfettiEffect;
 let bounceCount = 0;
@@ -231,14 +231,16 @@ function animateTilesIn(tiles) {
   const order = [...tiles];
   shuffle(order);
   order.forEach((tile, idx) => {
+    const delay = idx * 150;
     const anim = tile.animate(
       [
         { transform: 'scale(0)', opacity: 0 },
         { transform: 'scale(1.2)', opacity: 1 },
         { transform: 'scale(1)', opacity: 1 }
       ],
-      { duration: 300, easing: 'ease-out', delay: idx * 150 }
+      { duration: 300, easing: 'ease-out', delay }
     );
+    setTimeout(() => playBubble(), delay);
     anim.addEventListener('finish', () => {
       tile.style.opacity = 1;
       tile.style.transform = '';
