@@ -3,8 +3,6 @@ import { allSlotsFilled } from './word-check.mjs';
 import { startConfetti as createConfettiEffect } from '../../js/confetti.js';
 import { ensureRunning, playWord, playSuccess, playBubble } from './audio.mjs';
 
-const screen = document.querySelector('.game');
-
 let stopConfettiEffect;
 let bounceCount = 0;
 let bounceHandler;
@@ -326,7 +324,7 @@ function dropUnusedTiles() {
 function endGame() {
   // give the player a brief moment to enjoy the final word animation
   setTimeout(() => {
-    screen.classList.add('fade-out');
+    document.body.classList.add('fade-out');
     setTimeout(() => {
       window.location.href = '../celebration/';
     }, 500);
@@ -392,12 +390,12 @@ function showWord(wordObj, animateTiles = true) {
     });
   nextBtn.textContent = 'Mot suivant \u27A1\uFE0F';
   nextBtn.onclick = () => {
-    screen.classList.add('word-fade-out');
+    document.body.classList.add('word-fade-out');
     setTimeout(() => {
-      screen.classList.remove('word-fade-out');
+      document.body.classList.remove('word-fade-out');
       startGame();
-      screen.classList.add('word-fade-in');
-      setTimeout(() => screen.classList.remove('word-fade-in'), 200);
+      document.body.classList.add('word-fade-in');
+      setTimeout(() => document.body.classList.remove('word-fade-in'), 200);
     }, 200);
   };
   if (animateTiles) {
