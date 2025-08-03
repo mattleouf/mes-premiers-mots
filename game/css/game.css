@@ -17,6 +17,11 @@ body {
   background: #f7f7f5;
   user-select: none;
 }
+.game-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 #picture {
   /* enlarge the emoji display */
   font-size: var(--picture-size);
@@ -283,10 +288,12 @@ body {
 
 @media (orientation: landscape) {
   body {
+    padding-top: 1rem;
+  }
+  .game-layout {
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-evenly;
-    padding-top: 1rem;
   }
   #picture {
     margin-right: 2rem;
