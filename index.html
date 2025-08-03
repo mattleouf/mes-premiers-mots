@@ -11,13 +11,14 @@
   <link rel="stylesheet" href="css/landing.css">
 </head>
 <body>
-  <div class="flying-tile" aria-hidden="true"></div>
-  <div class="flying-tile" aria-hidden="true"></div>
-  <div class="flying-tile" aria-hidden="true"></div>
-  <div class="flying-tile" aria-hidden="true"></div>
-  <div class="flying-tile" aria-hidden="true"></div>
-  <div class="flying-tile" aria-hidden="true"></div>
-  <div class="flying-tile" aria-hidden="true"></div>
+  <div class="app landing">
+    <div class="flying-tile" aria-hidden="true"></div>
+    <div class="flying-tile" aria-hidden="true"></div>
+    <div class="flying-tile" aria-hidden="true"></div>
+    <div class="flying-tile" aria-hidden="true"></div>
+    <div class="flying-tile" aria-hidden="true"></div>
+    <div class="flying-tile" aria-hidden="true"></div>
+    <div class="flying-tile" aria-hidden="true"></div>
     <div class="container">
       <h1 class="title titan-one-regular">
         <span class="small">MES</span>
@@ -34,20 +35,21 @@
         <button id="options" class="btn options">Options</button>
       </div>
     </div>
-  <div id="loading-overlay" class="loading-overlay hidden">
-    <div class="container">
-      <h1 class="title titan-one-regular">
-        <span class="small">MES</span>
-        <span class="medium">PREMIERS</span>
-      </h1>
-      <div class="title-tiles">
-        <div class="title-tile">M</div>
-        <div class="title-tile">O</div>
-        <div class="title-tile">T</div>
-        <div class="title-tile">S</div>
+    <div id="loading-overlay" class="loading-overlay hidden">
+      <div class="container">
+        <h1 class="title titan-one-regular">
+          <span class="small">MES</span>
+          <span class="medium">PREMIERS</span>
+        </h1>
+        <div class="title-tiles">
+          <div class="title-tile">M</div>
+          <div class="title-tile">O</div>
+          <div class="title-tile">T</div>
+          <div class="title-tile">S</div>
+        </div>
+        <div class="loading-bar"><div id="loading-progress" class="loading-progress"></div></div>
+        <div id="loading-text" class="loading-text">0%</div>
       </div>
-      <div class="loading-bar"><div id="loading-progress" class="loading-progress"></div></div>
-      <div id="loading-text" class="loading-text">0%</div>
     </div>
   </div>
   <script src="js/landing.js"></script>
