@@ -91,12 +91,11 @@ body {
 .slot.flash-letter {
   animation: flash-letter-red 0.3s;
 }
-.next {
-  margin-top: 2rem;
+#next {
   position: fixed;
-  left: 50%;
-  top: 60%;
-  transform: translateX(-50%);
+  bottom: clamp(1rem, 10vh, 4rem);
+  right: 50%;
+  transform: translateX(50%);
   z-index: 2;
 }
 
@@ -242,8 +241,8 @@ body {
 /* Settings button */
 .settings-btn {
   position: fixed;
-  top: 0.5rem;
-  right: 0.25rem;
+  top: clamp(0.25rem, 2vh, 1rem);
+  right: clamp(0.25rem, 2vw, 1rem);
   background: none;
   border: none;
   font-family: "Nunito", sans-serif;
@@ -308,6 +307,15 @@ body {
   }
 }
 
+@media (min-width: 1200px) {
+  #next {
+    bottom: clamp(2rem, 10vh, 6rem);
+  }
+  .settings-btn {
+    top: clamp(1rem, 2vh, 2rem);
+    right: clamp(1rem, 2vw, 2rem);
+  }
+}
 
 body.fade-out {
   animation: screen-out 0.5s ease forwards;
