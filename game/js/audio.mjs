@@ -87,4 +87,31 @@ export async function playSuccess() {
   return new Promise((res) => src.addEventListener('ended', res, { once: true }));
 }
 
-// This module intentionally only exposes the letter, word, and success audio.
+const bubbleHistory = [];
+
+export async function playBubble() {
+  await ensureRunning();
+  const indices = [0, 1, 2, 3, 4];
+  const available = indices.filter((i) => !bubbleHistory.includes(i));
+  const idx = available[Math.floor(Math.random() * available.length)];
+  const key = `SFX:BUBBLE_${idx}`;
+  let buf = cache[key];
+  if (!buf) {
+    const url = new URL(
+      `../../assets/audio/SFX/bubbles/bubble_0${idx + 1}.mp3`,
+      import.meta.url
+    );
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+    const bytes = await res.arrayBuffer();
+    buf = cache[key] = await audioCtx().decodeAudioData(bytes);
+  }
+  const src = audioCtx().createBufferSource();
+  src.buffer = buf;
+  src.connect(audioCtx().destination);
+  src.start();
+  bubbleHistory.push(idx);
+  if (bubbleHistory.length > 2) bubbleHistory.shift();
+}
+
+// This module intentionally only exposes the letter, word, bubble, and success audio.
