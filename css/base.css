@@ -1,5 +1,22 @@
 /* Base styles: resets, fonts */
-body { margin: 0; font-family: sans-serif; }
+body {
+  margin: 0;
+  font-family: sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f7f7f5;
+}
+
+/* Wrapper keeping a fixed iPhone 14 Pro portrait ratio (131 : 284) */
+.app {
+  position: relative;
+  width: min(100vw, calc(131 / 284 * 100vh));
+  height: min(100vh, calc(284 / 131 * 100vw));
+  aspect-ratio: 131 / 284;
+  overflow: hidden;
+}
 
 /* Font for the animated title */
 .bungee-regular {
