@@ -1,5 +1,6 @@
 // Use the shared confetti script from the project root.
 import { startConfetti } from '../../js/confetti.js';
+import { playBravo } from '../../game/js/audio.mjs';
 
 window.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('emoji-container');
@@ -8,6 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const emojis = stored ? JSON.parse(stored) : [];
 
   const stopConfetti = startConfetti();
+  playBravo();
 
   const wrappers = [];
   const radius = 35; // circle radius in vmin

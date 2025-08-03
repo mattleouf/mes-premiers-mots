@@ -87,6 +87,27 @@ export async function playSuccess() {
   return new Promise((res) => src.addEventListener('ended', res, { once: true }));
 }
 
+export async function playBravo() {
+  await ensureRunning();
+  const key = 'SFX:BRAVO';
+  let buf = cache[key];
+  if (!buf) {
+    const url = new URL(
+      '../../assets/audio/SFX/BRAVO.mp3',
+      import.meta.url
+    );
+    const res = await fetch(url, { mode: 'cors' });
+    if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+    const bytes = await res.arrayBuffer();
+    buf = cache[key] = await audioCtx().decodeAudioData(bytes);
+  }
+  const src = audioCtx().createBufferSource();
+  src.buffer = buf;
+  src.connect(audioCtx().destination);
+  src.start();
+  return new Promise((res) => src.addEventListener('ended', res, { once: true }));
+}
+
 const bubbleHistory = [];
 
 export async function playBubble() {
@@ -114,4 +135,4 @@ export async function playBubble() {
   if (bubbleHistory.length > 2) bubbleHistory.shift();
 }
 
-// This module intentionally only exposes the letter, word, bubble, and success audio.
+// This module intentionally only exposes the letter, word, bubble, success, and bravo audio.
