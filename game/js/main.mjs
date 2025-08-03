@@ -24,51 +24,45 @@ function updateScale() {
   layout.style.transform = `scale(${scale})`;
 }
 
-function repositionTiles() {
+function layoutTiles(tiles) {
   const container = document.getElementById('tiles');
-  if (!container) return;
+  if (!container || tiles.length === 0) return;
   const width = container.offsetWidth;
-  const height = container.offsetHeight;
   const sampleSlot = document.querySelector('.slot');
   const tileW = sampleSlot ? sampleSlot.offsetWidth : 40;
   const tileH = sampleSlot ? sampleSlot.offsetHeight : 50;
-  const marginX = tileW;
-  // use a smaller vertical margin so random placement always has
-  // some wiggle room even on short screens
-  const marginY = Math.min(tileH * 0.5, height * 0.1);
+  const spacing = tileW * 0.25;
+  const cols = Math.max(1, Math.floor((width + spacing) / (tileW + spacing)));
+  const rows = Math.ceil(tiles.length / cols);
+  const neededHeight = rows * tileH + (rows + 1) * spacing;
+  container.style.height = `${neededHeight}px`;
+  const totalWidth = cols * tileW + (cols - 1) * spacing;
+  const marginX = Math.max(spacing, (width - totalWidth) / 2);
   const positions = [];
-  const maxAttempts = 300;
-
-  const randomPos = () => ({
-    x: marginX + Math.random() * Math.max(0, width - 2 * marginX - tileW),
-    y: marginY + Math.random() * Math.max(0, height - 2 * marginY - tileH),
-  });
-
-  const isOverlap = (x, y) =>
-    positions.some((p) =>
-      !(x + tileW <= p.x || p.x + tileW <= x || y + tileH <= p.y || p.y + tileH <= y)
-    );
-
-  const nonOverlappingPos = () => {
-    for (let tries = 0; tries < maxAttempts; tries++) {
-      const pos = randomPos();
-      if (!isOverlap(pos.x, pos.y)) return pos;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols && positions.length < tiles.length; c++) {
+      positions.push({
+        x: marginX + c * (tileW + spacing),
+        y: spacing + r * (tileH + spacing),
+      });
     }
-    return randomPos();
-  };
-
-  currentTiles.forEach((tile) => {
-    if (tile.used) return;
-    const pos = nonOverlappingPos();
-    positions.push(pos);
+  }
+  shuffle(positions);
+  tiles.forEach((tile, idx) => {
+    const pos = positions[idx];
     tile.style.left = `${pos.x}px`;
     tile.style.top = `${pos.y}px`;
   });
 }
 
+function repositionTiles() {
+  const active = currentTiles.filter((t) => !t.used);
+  layoutTiles(active);
+}
+
 function handleResize() {
-  updateScale();
   repositionTiles();
+  updateScale();
 }
 
 // Emoji history management
@@ -186,56 +180,18 @@ function createTiles(word) {
     [letters[i], letters[j]] = [letters[j], letters[i]];
   }
   const tiles = [];
-  const positions = [];
-  const { width, height } = container.getBoundingClientRect();
-
-  // Measure an existing slot to get the actual tile dimensions as rendered by
-  // CSS. This avoids relying on custom property strings like
-  // "clamp(40px, 10vw, 80px)" which cannot be parsed directly to pixel values.
-  const sampleSlot = document.querySelector('.slot');
-  const slotRect = sampleSlot
-    ? sampleSlot.getBoundingClientRect()
-    : { width: 40, height: 50 };
-  const tileW = slotRect.width;
-  const tileH = slotRect.height;
-  const spacing = tileW * 0.25;
-  const marginX = tileW; // keep one tile empty on each side
-  // vertical margin kept small so available height isn't consumed
-  const marginY = Math.min(tileH * 0.5, height * 0.1);
-
-  const maxAttempts = 300;
-
-  const randomPos = () => ({
-    x: marginX + Math.random() * Math.max(0, width - 2 * marginX - tileW),
-    y: marginY + Math.random() * Math.max(0, height - 2 * marginY - tileH)
-  });
-
-  const isOverlap = (x, y) =>
-    positions.some((p) =>
-      !(x + tileW <= p.x || p.x + tileW <= x || y + tileH <= p.y || p.y + tileH <= y)
-    );
-
-  const nonOverlappingPos = () => {
-    for (let tries = 0; tries < maxAttempts; tries++) {
-      const pos = randomPos();
-      if (!isOverlap(pos.x, pos.y)) return pos;
-    }
-    return randomPos();
-  };
-
   for (const letter of letters) {
     const d = document.createElement('div');
     d.className = 'tile';
     d.textContent = letter;
-    const pos = nonOverlappingPos();
-    positions.push(pos);
-    d.style.left = `${pos.x}px`;
-    d.style.top = `${pos.y}px`;
-    d.style.opacity = 0;
-    d.style.transform = 'scale(0)';
     container.appendChild(d);
     tiles.push(d);
   }
+  layoutTiles(tiles);
+  tiles.forEach((d) => {
+    d.style.opacity = 0;
+    d.style.transform = 'scale(0)';
+  });
   return tiles;
 }
 
