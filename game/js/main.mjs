@@ -24,6 +24,30 @@ function updateScale() {
   layout.style.transform = `scale(${scale})`;
 }
 
+function findOffset(base, placed, tileW, tileH, maxX, maxY) {
+  const area = tileW * tileH;
+  let best = { x: 0, y: 0, overlap: Infinity };
+  for (let i = 0; i < 20; i++) {
+    const ox = (Math.random() * 2 - 1) * maxX;
+    const oy = (Math.random() * 2 - 1) * maxY;
+    const rect = { x: base.x + ox, y: base.y + oy };
+    let worst = 0;
+    for (const p of placed) {
+      const ow = Math.max(0, Math.min(rect.x + tileW, p.x + tileW) - Math.max(rect.x, p.x));
+      const oh = Math.max(0, Math.min(rect.y + tileH, p.y + tileH) - Math.max(rect.y, p.y));
+      worst = Math.max(worst, ow * oh);
+      if (worst > area * 0.2) break;
+    }
+    if (worst <= area * 0.2) {
+      return { offsetX: ox, offsetY: oy };
+    }
+    if (worst < best.overlap) {
+      best = { x: ox, y: oy, overlap: worst };
+    }
+  }
+  return { offsetX: best.x, offsetY: best.y };
+}
+
 function layoutTiles(tiles) {
   const container = document.getElementById('tiles');
   if (!container || tiles.length === 0) return;
@@ -48,10 +72,23 @@ function layoutTiles(tiles) {
     }
   }
   shuffle(positions);
+  const placed = [];
+  const maxOffsetX = Math.min(spacing * 0.8, tileW * 0.2);
+  const maxOffsetY = Math.min(spacing * 0.8, tileH * 0.2);
   tiles.forEach((tile, idx) => {
     const pos = positions[idx];
-    tile.style.left = `${pos.x}px`;
-    tile.style.top = `${pos.y}px`;
+    let offsetX = parseFloat(tile.dataset.offsetX);
+    let offsetY = parseFloat(tile.dataset.offsetY);
+    if (isNaN(offsetX) || isNaN(offsetY)) {
+      ({ offsetX, offsetY } = findOffset(pos, placed, tileW, tileH, maxOffsetX, maxOffsetY));
+      tile.dataset.offsetX = offsetX;
+      tile.dataset.offsetY = offsetY;
+    }
+    const finalX = pos.x + offsetX;
+    const finalY = pos.y + offsetY;
+    tile.style.left = `${finalX}px`;
+    tile.style.top = `${finalY}px`;
+    placed.push({ x: finalX, y: finalY });
   });
 }
 
