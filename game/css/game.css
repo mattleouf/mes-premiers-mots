@@ -93,7 +93,7 @@ body {
 }
 #next {
   position: fixed;
-  bottom: clamp(1rem, 10vh, 4rem);
+  bottom: clamp(8rem, 16vh, 10rem);
   right: 50%;
   transform: translateX(50%);
   z-index: 2;
@@ -122,8 +122,8 @@ body {
   pointer-events: none;
   position: fixed;
   left: 50%;
-  top: 45%;
-  transform: translate(-50%, -50%);
+  top: clamp(0.5rem, 8vh, 3rem);
+  transform: translateX(-50%);
   white-space: nowrap;
   z-index: 2;
 }
