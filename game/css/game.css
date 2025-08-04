@@ -3,14 +3,14 @@
   --tile-width: clamp(40px, 10vmin, 80px);
   --tile-height: clamp(50px, 12vmin, 100px);
   --tile-font: clamp(2rem, 5vmin, 3rem);
-  --picture-size: clamp(6.5rem, 20vmin, 12rem);
+  --picture-size: clamp(8rem, 25vmin, 16rem);
   --btn-font: clamp(1.2rem, 3vmin, 1.6rem);
   --tiles-height: min(35vh, 80vmin);
 }
 
 body {
   text-align: center;
-  padding-top: 2rem;
+  padding-top: 0.5rem;
   overflow: hidden; /* prevent page scrolling during gameplay */
   display: flex;
   flex-direction: column;
@@ -27,8 +27,8 @@ body {
 #picture {
   /* enlarge the emoji display */
   font-size: var(--picture-size);
-  /* push following elements down a bit for spacing */
-  margin-bottom: 1.5rem;
+  /* reduced spacing to bring word closer to the top */
+  margin-bottom: 1rem;
 }
 .word {
   display: flex;
