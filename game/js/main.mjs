@@ -55,26 +55,25 @@ function layoutTiles(tiles) {
   const sampleSlot = document.querySelector('.slot');
   const tileW = sampleSlot ? sampleSlot.offsetWidth : 40;
   const tileH = sampleSlot ? sampleSlot.offsetHeight : 50;
-  const spacing = tileW * 0.25;
-  const cols = Math.max(1, Math.floor((width + spacing) / (tileW + spacing)));
+  const cols = Math.min(tiles.length, Math.max(1, Math.floor(width / tileW)));
+  const spacingX = Math.max(0, (width - cols * tileW) / (cols + 1));
+  const spacingY = tileH * 0.25;
   const rows = Math.ceil(tiles.length / cols);
-  const neededHeight = rows * tileH + (rows + 1) * spacing;
+  const neededHeight = rows * tileH + (rows + 1) * spacingY;
   container.style.height = `${neededHeight}px`;
-  const totalWidth = cols * tileW + (cols - 1) * spacing;
-  const marginX = Math.max(spacing, (width - totalWidth) / 2);
   const positions = [];
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols && positions.length < tiles.length; c++) {
       positions.push({
-        x: marginX + c * (tileW + spacing),
-        y: spacing + r * (tileH + spacing),
+        x: spacingX + c * (tileW + spacingX),
+        y: spacingY + r * (tileH + spacingY),
       });
     }
   }
   shuffle(positions);
   const placed = [];
-  const maxOffsetX = Math.min(spacing * 0.8, tileW * 0.2);
-  const maxOffsetY = Math.min(spacing * 0.8, tileH * 0.2);
+  const maxOffsetX = Math.min(spacingX * 0.8, tileW * 0.4);
+  const maxOffsetY = Math.min(spacingY * 0.8, tileH * 0.3);
   tiles.forEach((tile, idx) => {
     const pos = positions[idx];
     let offsetX = parseFloat(tile.dataset.offsetX);
