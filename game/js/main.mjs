@@ -55,8 +55,13 @@ function layoutTiles(tiles) {
   const sampleSlot = document.querySelector('.slot');
   const tileW = sampleSlot ? sampleSlot.offsetWidth : 40;
   const tileH = sampleSlot ? sampleSlot.offsetHeight : 50;
-  const cols = Math.min(tiles.length, Math.max(1, Math.floor(width / tileW)));
-  const spacingX = Math.max(0, (width - cols * tileW) / (cols + 1));
+  let cols = Math.min(tiles.length, Math.max(1, Math.floor(width / tileW)));
+  let spacingX = (width - cols * tileW) / (cols + 1);
+  while (cols > 1 && spacingX < tileW * 0.25) {
+    cols--;
+    spacingX = (width - cols * tileW) / (cols + 1);
+  }
+  spacingX = Math.max(spacingX, tileW * 0.25);
   const spacingY = tileH * 0.25;
   const rows = Math.ceil(tiles.length / cols);
   const neededHeight = rows * tileH + (rows + 1) * spacingY;
