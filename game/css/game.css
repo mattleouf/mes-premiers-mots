@@ -57,7 +57,14 @@ body {
 .tiles {
   position: relative;
   height: var(--tiles-height);
-  width: 100%;
+  width: min(calc(100vw - 2 * var(--tile-width)), calc(var(--tile-width) * 12));
+  margin: 0 auto;
+}
+
+@media (orientation: landscape) {
+  .tiles {
+    margin: 0;
+  }
 }
 .tile {
   width: var(--tile-width);
