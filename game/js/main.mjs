@@ -204,14 +204,9 @@ function createSlots(word) {
   }
   for (const [idx, letter] of [...word].entries()) {
     const d = document.createElement('div');
-    d.className = 'slot';
+    d.className = 'slot preview';
     d.dataset.letter = letter;
-    if (previewIndices.includes(idx)) {
-      d.classList.add('preview');
-      d.textContent = letter;
-    } else {
-      d.textContent = '';
-    }
+    d.textContent = previewIndices.includes(idx) ? letter : '?';
     container.appendChild(d);
     slots.push(d);
   }
