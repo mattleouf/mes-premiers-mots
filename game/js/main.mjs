@@ -14,6 +14,7 @@ function parseLimit(value) {
 
 let sessionLimit = parseLimit(sessionStorage.getItem('wordLimit'));
 let wordsPlayed = 0;
+const previewMode = localStorage.getItem('previewMode') || 'full';
 
 function updateScale() {
   const layout = document.querySelector('.game-layout');
@@ -193,11 +194,24 @@ function createSlots(word) {
   const container = document.getElementById('word');
   container.innerHTML = '';
   const slots = [];
-  for (const letter of word) {
+  let previewIndices = [];
+  if (previewMode === 'full') {
+    previewIndices = [...word].map((_, idx) => idx);
+  } else if (previewMode === 'partial') {
+    previewIndices = [...word].map((_, idx) => idx);
+    shuffle(previewIndices);
+    previewIndices = previewIndices.slice(0, Math.ceil(word.length / 2));
+  }
+  for (const [idx, letter] of [...word].entries()) {
     const d = document.createElement('div');
-    d.className = 'slot preview';
+    d.className = 'slot';
     d.dataset.letter = letter;
-    d.textContent = letter;
+    if (previewIndices.includes(idx)) {
+      d.classList.add('preview');
+      d.textContent = letter;
+    } else {
+      d.textContent = '';
+    }
     container.appendChild(d);
     slots.push(d);
   }
