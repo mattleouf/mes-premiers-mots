@@ -172,15 +172,12 @@ function nextWord() {
   if (playlist.length === 0 || playlistIndex >= playlist.length) {
     playlist = [...wordList];
     shuffle(playlist);
-    if (
-      previousWord &&
-      playlist.length > 1 &&
-      playlist[0].word === previousWord.word
-    ) {
-      // ensure we don't repeat the same word twice in a row
-      const swapIdx = playlist.findIndex((w) => w.word !== previousWord.word);
-      if (swapIdx > 0) {
-        [playlist[0], playlist[swapIdx]] = [playlist[swapIdx], playlist[0]];
+    if (previousWord && playlist.length > 1) {
+      // ensure the previously played word only appears after all others
+      const prevIdx = playlist.findIndex((w) => w.word === previousWord.word);
+      if (prevIdx !== -1) {
+        const [prev] = playlist.splice(prevIdx, 1);
+        playlist.push(prev);
       }
     }
     playlistIndex = 0;
