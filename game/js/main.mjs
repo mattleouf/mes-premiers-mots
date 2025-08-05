@@ -378,7 +378,19 @@ async function animateWordReveal(slots) {
 }
 
 function showWord(wordObj, animateTiles = true) {
-  document.getElementById('picture').textContent = wordObj.emoji;
+  const pic = document.getElementById('picture');
+  pic.textContent = wordObj.emoji;
+  pic.onpointerdown = () => {
+    pic.animate(
+      [
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.3)' },
+        { transform: 'scale(1)' },
+      ],
+      { duration: 300, easing: 'ease' }
+    );
+    playWord(wordObj.word);
+  };
   const slots = createSlots(wordObj.word);
   const tiles = createTiles(wordObj.word);
   currentTiles = tiles;
