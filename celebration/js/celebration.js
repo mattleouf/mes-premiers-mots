@@ -1,6 +1,6 @@
 // Use the shared confetti script from the project root.
 import { startConfetti } from '../../js/confetti.js';
-import { playBravo } from '../../game/js/audio.mjs';
+import { playBravo, playBubble } from '../../game/js/audio.mjs';
 
 window.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('emoji-container');
@@ -38,8 +38,10 @@ window.addEventListener('DOMContentLoaded', () => {
     trophy.className = 'trophy';
     trophy.x = 0;
     trophy.y = 0;
-    const angle = Math.random() * Math.PI * 2;
-    const speed = 200 + Math.random() * 200;
+    const angle =
+      Math.PI * 1.5 + // center straight up (screen coords)
+      (Math.random() - 0.5) * Math.PI * 0.5; // spread of ±45°
+    const speed = 300 + Math.random() * 200;
     trophy.vx = Math.cos(angle) * speed;
     trophy.vy = Math.sin(angle) * speed;
     wheel.appendChild(trophy);
@@ -70,7 +72,10 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  thumbUp.addEventListener('pointerdown', spawnTrophy);
+  thumbUp.addEventListener('pointerdown', () => {
+    spawnTrophy();
+    playBubble();
+  });
   const radius = 35; // circle radius in vmin
   const baseSize = Math.min(8, 60 / Math.max(emojis.length, 1));
   const fontSize = baseSize * 1.25; // make emojis 25% larger
