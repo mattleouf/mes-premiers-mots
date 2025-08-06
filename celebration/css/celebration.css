@@ -58,7 +58,18 @@ body {
   font-size: clamp(4rem, 20vmin, 8rem);
   animation: pulse 1.6s ease-in-out infinite;
   z-index: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.trophy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
+  font-size: clamp(3rem, 10vmin, 5rem);
+  will-change: transform;
 }
 
 @keyframes wheelPulse {
